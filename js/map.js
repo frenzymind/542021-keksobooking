@@ -56,6 +56,7 @@ function getOffer(x, y, currentNumber) {
   var maxRoomCount = 5;
   var minGuestCount = 2;
   var maxGuestCount = 4;
+  var featuresCount = generateRandomInt(0, OFFER_FEATURES.length);
 
   offer.title = OFFER_TITLES[currentNumber];
   offer.address = '' + x +',' + y;
@@ -65,6 +66,15 @@ function getOffer(x, y, currentNumber) {
   offer.guests = generateRandomInt(minGuestCount, maxGuestCount + 1);
   offer.checkin = getRandomArrayElement(OFFER_CHECKS);
   offer.checkout = getRandomArrayElement(OFFER_CHECKS);
+  offer.features = [];
+
+  for (var i = 0; i < featuresCount; i++) {
+
+    offer.features[i] = getRandomArrayElement(OFFER_FEATURES);
+  }
+
+  offer.description = '';
+  offer.photos = [];
 
   return offer;
 }
@@ -100,7 +110,7 @@ function generateAds(count) {
     ad.avatar = avatarPath + avatarPrefix + '0' + currentNumber + avatarExtension;
 
     ad.location = getLocation();
-    ad.offer = getOffer(location.x, location.y, currentNumber);
+    ad.offer = getOffer(ad.location.x, ad.location.y, currentNumber);
 
 
     ads.push(ad);
