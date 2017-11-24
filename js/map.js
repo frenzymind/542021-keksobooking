@@ -93,31 +93,86 @@ function getLocation() {
   return location;
 }
 
+function getAvatar(currentNumber) {
+
+  var avatarObj = {};
+
+  var avatarPath = 'img/avatars/';
+  var avatarPrefix = 'user';
+  var avatarExtension = '.png';
+
+  avatarObj.avatar = avatarPath + avatarPrefix + '0' + ++currentNumber + avatarExtension;
+
+  return avatarObj;
+}
+
 function generateAds(count) {
 
   var ad;
   var ads = [];
-  var avatarPath = 'img/avatars/';
-  var avatarPrefix = 'user';
-  var avatarExtension = '.png';
-  var currentNumber = 1;
-
+  var currentNumber = 0;
 
   for (var i = 0; i < count; i++) {
 
     ad = {};
 
-    ad.avatar = avatarPath + avatarPrefix + '0' + currentNumber + avatarExtension;
-
+    ad.author = getAvatar(currentNumber);
     ad.location = getLocation();
     ad.offer = getOffer(ad.location.x, ad.location.y, currentNumber);
-
 
     ads.push(ad);
 
     currentNumber++;
   }
-var t = 0;
+
+  return ads;
 }
 
-generateAds(3);
+function createDomPinElement(ad) {
+
+  var button = document.createElement('button');
+  button.style.left = ad.location.x + 'px';
+  button.style.top = ad.location.y + 'px';
+  button.classList.add('map__pin');
+
+  var img = document.createElement('img');
+  img.src = ad.author.avatar;
+  img.width = 40;
+  img.height = 40;
+  img.draggable = false;
+
+  button.appendChild(img);
+
+  var t= 0;
+  return button;
+}
+
+function createPinsFragment(ads) {
+
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < ads.length; i++) {
+    fragment.appendChild(createDomPinElement(ads[i]));
+  }
+
+  return fragment;
+}
+
+function showAds() {
+
+  var adsCount = 8;
+
+  var ads = generateAds(adsCount);
+
+  var map = document.querySelector('.map--faded');
+  map.classList.remove('map--faded');
+
+  var mapPins = document.querySelector('.map__pins');
+
+  var fragment = createPinsFragment(ads);
+
+  mapPins.appendChild(fragment);
+  var t= 0;
+}
+
+showAds();
