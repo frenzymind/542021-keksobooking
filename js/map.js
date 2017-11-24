@@ -128,11 +128,25 @@ function generateAds(count) {
   return ads;
 }
 
+function scaleX(x) {
+
+  var mapPinXCorrection = -20;
+
+  return x + mapPinXCorrection;
+}
+
+function scaleY(y) {
+
+  var mapPinYCorrection = -22;
+
+  return y + mapPinYCorrection;
+}
+
 function createDomPinElement(ad) {
 
   var button = document.createElement('button');
-  button.style.left = ad.location.x + 'px';
-  button.style.top = ad.location.y + 'px';
+  button.style.left = scaleX(ad.location.x) + 'px';
+  button.style.top = scaleY(ad.location.y) + 'px';
   button.classList.add('map__pin');
 
   var img = document.createElement('img');
