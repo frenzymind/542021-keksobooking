@@ -51,14 +51,14 @@ function getRandomUniqueArray(array, count) {
   var copyArray = []; // я прав, что после выхода из функции он уничтожится ?
   var uniqueArray = [];
 
-	for (var i = 0; i < array.length; i++) {
+  for (var i = 0; i < array.length; i++) {
     copyArray[i] = array[i];
   }
 
   for (i = 0; i < count; i++) {
 
     uniqueArray[i] = getRandomArrayElement(copyArray);
-    copyArray.splice(copyArray.indexOf(uniqueArray[i]),1);
+    copyArray.splice(copyArray.indexOf(uniqueArray[i]), 1);
   }
 
   return uniqueArray;
@@ -84,7 +84,7 @@ function getOffer(x, y, currentNumber) {
   offer.guests = generateRandomInt(minGuestCount, maxGuestCount + 1);
   offer.checkin = getRandomArrayElement(OFFER_CHECKS);
   offer.checkout = getRandomArrayElement(OFFER_CHECKS);
-  offer.features = getRandomUniqueArray(OFFER_FEATURES,featuresCount);
+  offer.features = getRandomUniqueArray(OFFER_FEATURES, featuresCount);
   offer.description = '123';
   offer.photos = [];
 
