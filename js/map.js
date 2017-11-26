@@ -73,7 +73,7 @@ function getOffer(x, y, currentNumber) {
     offer.features[i] = getRandomArrayElement(OFFER_FEATURES);
   }
 
-  offer.description = '';
+  offer.description = '123';
   offer.photos = [];
 
   return offer;
@@ -172,21 +172,92 @@ function createPinsFragment(ads) {
   return fragment;
 }
 
+function getHousingByType(type) {
+
+  var housing;
+
+  switch(type) {
+
+    case 'flat':
+      housing = 'Квартира';
+      break;
+
+    case 'bungalo':
+      housing = 'Бунгало';
+      break;
+
+    case 'house':
+      housing = 'Дом';
+      break;
+
+    default : housing = 'Неизветсный тип жилья';
+  }
+
+  return housing;
+}
+
+function deleteFeature(articleFeatures, feature) {
+
+  var featureClass = '.feature--' + feature;
+
+  var nodeFeature = articleFeatures.querySelector(featureClass);
+
+  nodeFeature.parentNode.removeChild(nodeFeature);
+
+  var t = 0;
+}
+
+function getAdArticle(ad, template) {
+
+  var article = template.cloneNode(true);
+
+  article.querySelector('h3').textContent = ad.offer.title;
+  article.querySelector('p small').textContent = ad.offer.address;
+  article.querySelector('p.popup__price').textContent = ad.offer.price + '&#x20bd;/ночь';
+  article.querySelector('h4').textContent = getHousingByType(ad.offer.type);
+  article.querySelector('p:nth-of-type(3)').textContent = ad.offer.rooms + ' для ' + ad.offer.guests + ' гостей';
+  article.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
+
+  var articleDomFeatures = article.querySelector('ul');
+
+  for (var i = 0; i < OFFER_FEATURES.length; i++) {
+
+    var featureIndex = ad.offer.features.indexOf(OFFER_FEATURES[i]);
+
+    if (featureIndex === -1) {
+      deleteFeature(articleDomFeatures, OFFER_FEATURES[i]);
+    }
+  }
+
+  article.querySelector('p:nth-of-type(5)').textContent = ad.offer.description;
+  article.querySelector('ul.popup__pictures li img').attributes.src.value = ad.author.avatar;
+
+  return article;
+}
+
 function showAds() {
 
   var adsCount = 8;
 
   var ads = generateAds(adsCount);
 
-  var map = document.querySelector('.map--faded');
+  var map = document.querySelector('.map');
   map.classList.remove('map--faded');
 
   var mapPins = document.querySelector('.map__pins');
 
-  var fragment = createPinsFragment(ads);
+  var fragmentPins = createPinsFragment(ads);
 
-  mapPins.appendChild(fragment);
-  var t= 0;
+  mapPins.appendChild(fragmentPins);
+
+  var mapCardTemplate = document.querySelector('template').content.querySelector('article.map__card');
+
+  var article = getAdArticle(ads[0], mapCardTemplate);
+
+  var nodeBefore = document.querySelector('.map__filters-container');
+  var nodeBeforeParent = nodeBefore.parentNode;
+
+  nodeBeforeParent.insertBefore(article, nodeBefore);
 }
 
 showAds();
