@@ -210,7 +210,7 @@ function getAdArticle(ad, template) {
 
   article.querySelector('h3').textContent = ad.offer.title;
   article.querySelector('p small').textContent = ad.offer.address;
-  article.querySelector('p.popup__price').textContent = ad.offer.price + '&#x20bd;/ночь';
+  article.querySelector('p.popup__price').innerHTML = ad.offer.price + ' &#x20bd; /ночь';
   article.querySelector('h4').textContent = getHousingByType(ad.offer.type);
   article.querySelector('p:nth-of-type(3)').textContent = ad.offer.rooms + ' для ' + ad.offer.guests + ' гостей';
   article.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
