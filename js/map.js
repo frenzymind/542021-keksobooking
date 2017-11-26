@@ -1,4 +1,4 @@
-'user strict';
+'use strict';
 
 var OFFER_TITLES = [
   'Большая уютная квартира',
@@ -59,7 +59,7 @@ function getOffer(x, y, currentNumber) {
   var featuresCount = generateRandomInt(0, OFFER_FEATURES.length);
 
   offer.title = OFFER_TITLES[currentNumber];
-  offer.address = '' + x +',' + y;
+  offer.address = '' + x + ',' + y;
   offer.price = generateRandomInt(minPrice, maxPrice + 1);
   offer.type = getRandomArrayElement(OFFER_TYPES);
   offer.rooms = generateRandomInt(minRoomCount, maxRoomCount + 1);
@@ -87,7 +87,7 @@ function getLocation() {
   var minY = 100;
   var maxY = 500;
 
-  location.x = generateRandomInt(minX, maxX + 1); //что бы было включительно
+  location.x = generateRandomInt(minX, maxX + 1); // что бы было включительно
   location.y = generateRandomInt(minY, maxY + 1);
 
   return location;
@@ -157,7 +157,6 @@ function createDomPinElement(ad) {
 
   button.appendChild(img);
 
-  var t= 0;
   return button;
 }
 
@@ -176,7 +175,7 @@ function getHousingByType(type) {
 
   var housing;
 
-  switch(type) {
+  switch (type) {
 
     case 'flat':
       housing = 'Квартира';
@@ -203,8 +202,6 @@ function deleteFeature(articleFeatures, feature) {
   var nodeFeature = articleFeatures.querySelector(featureClass);
 
   nodeFeature.parentNode.removeChild(nodeFeature);
-
-  var t = 0;
 }
 
 function getAdArticle(ad, template) {
