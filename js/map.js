@@ -134,7 +134,7 @@ function generateAds(count) {
   var ads = [];
   var currentNumber = 0;
 
-  for (var i = 0; i < count; i++ , currentNumber++) {
+  for (var i = 0; i < count; i++, currentNumber++) {
 
     ads.push(createAd(currentNumber));
   }
