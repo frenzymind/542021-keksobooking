@@ -124,7 +124,7 @@ function generateAds(count) {
   var ads = [];
   var currentNumber = 0;
 
-  for (var i = 0; i < count; i++) {
+  for (var i = 0; i < count; i++ , currentNumber++) {
 
     ad = {};
 
@@ -134,7 +134,6 @@ function generateAds(count) {
 
     ads.push(ad);
 
-    currentNumber++;
   }
 
   return ads;
