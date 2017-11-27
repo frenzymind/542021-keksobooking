@@ -113,7 +113,7 @@ function getAvatar(currentNumber) {
   var avatarPrefix = 'user';
   var avatarExtension = '.png';
 
-  avatarObj.avatar = avatarPath + avatarPrefix + '0' + ++currentNumber + avatarExtension;
+  avatarObj.avatar = avatarPath + avatarPrefix + '0' + currentNumber + avatarExtension;
 
   return avatarObj;
 }
@@ -128,7 +128,7 @@ function generateAds(count) {
 
     ad = {};
 
-    ad.author = getAvatar(currentNumber);
+    ad.author = getAvatar(currentNumber + 1);
     ad.location = getLocation();
     ad.offer = getOffer(ad.location.x, ad.location.y, currentNumber);
 
