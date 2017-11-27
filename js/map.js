@@ -118,22 +118,25 @@ function getAvatar(currentNumber) {
   return avatarObj;
 }
 
+function createAd(number) {
+
+  var ad = {};
+
+  ad.author = getAvatar(number + 1);
+  ad.location = getLocation();
+  ad.offer = getOffer(ad.location.x, ad.location.y, number);
+
+  return ad;
+}
+
 function generateAds(count) {
 
-  var ad;
   var ads = [];
   var currentNumber = 0;
 
   for (var i = 0; i < count; i++ , currentNumber++) {
 
-    ad = {};
-
-    ad.author = getAvatar(currentNumber + 1);
-    ad.location = getLocation();
-    ad.offer = getOffer(ad.location.x, ad.location.y, currentNumber);
-
-    ads.push(ad);
-
+    ads.push(createAd(currentNumber));
   }
 
   return ads;
@@ -200,7 +203,7 @@ function getHousingByType(type) {
       housing = 'Дом';
       break;
 
-    default : housing = 'Неизветсный тип жилья';
+    default : housing = 'Неизвестный тип жилья';
   }
 
   return housing;
