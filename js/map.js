@@ -37,6 +37,7 @@ var mapPins;
 var adNoticeForm;
 var mapMainPin;
 var ads;
+var activePin;
 
 function generateRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -266,12 +267,27 @@ function mapMainPinBegin() {
 
   map.classList.remove('map--faded');
   adNoticeForm.classList.remove('notice__form--disabled');
+
+  document.addEventListener('click', onMapPinClick);
 }
 
 var onMainPinMouseUp = function () {
 
   mapMainPinBegin();
+  setNoticeFormDisable(adNoticeForm, false);
   showAds();
+}
+
+var onMapPinClick = function (evt) {
+
+  var pinClass = 'map__pin';
+  var pinMainClass = 'map__pin--main';
+
+  if (evt.target.classList.contains(pinClass) === false || evt.target.classList.contains(pinMainClass) === true) {
+    return;
+  }
+
+  alert('123');
 }
 
 function Init() {
@@ -284,6 +300,8 @@ function Init() {
   setNoticeFormDisable(adNoticeForm, true);
 
   mapMainPin.addEventListener('mouseup', onMainPinMouseUp);
+
+
 }
 
 function showAds() {
