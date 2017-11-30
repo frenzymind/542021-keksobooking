@@ -287,7 +287,14 @@ var onMapPinClick = function (evt) {
     return;
   }
 
-  alert('123');
+  if (typeof activePin !== 'undefined') {
+    activePin.classList.remove('map__pin--active');
+  }
+
+  activePin = evt.target;
+  activePin.classList.add('map__pin--active');
+
+  //alert('123');
 }
 
 function Init() {
