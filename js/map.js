@@ -38,6 +38,11 @@ var adNoticeForm;
 var mapMainPin;
 var ads;
 var activePin;
+var mapCardPoppupTemplate;
+var adPopup;
+var nodeBefore;
+var nodeBeforeInsert;
+var currentArticle;
 
 function generateRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -163,12 +168,13 @@ function scaleY(y) {
   return y + mapPinYCorrection;
 }
 
-function createDomPinElement(ad) {
+function createDomPinElement(ad, index) {
 
   var button = document.createElement('button');
   button.style.left = scaleX(ad.location.x) + 'px';
   button.style.top = scaleY(ad.location.y) + 'px';
   button.classList.add('map__pin');
+  button.dataset.adIndex = index;
 
   var img = document.createElement('img');
   img.src = ad.author.avatar;
@@ -186,7 +192,7 @@ function createPinsFragment(ads) {
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < ads.length; i++) {
-    fragment.appendChild(createDomPinElement(ads[i]));
+    fragment.appendChild(createDomPinElement(ads[i], i));
   }
 
   return fragment;
@@ -255,6 +261,15 @@ function getAdArticle(ad, template) {
 
 function setNoticeFormDisable(noticeForm, able) {
 
+  var formDisableClass = 'notice__form--disabled';
+
+  if (able === false) {
+    adNoticeForm.classList.remove(formDisableClass);
+  }
+  else {
+    adNoticeForm.classList.add(formDisableClass);
+  }
+
   var fields = noticeForm.querySelectorAll('fieldset');
 
   for (var i = 0; i < fields.length; i++) {
@@ -266,8 +281,6 @@ function setNoticeFormDisable(noticeForm, able) {
 function mapMainPinBegin() {
 
   map.classList.remove('map--faded');
-  adNoticeForm.classList.remove('notice__form--disabled');
-
   document.addEventListener('click', onMapPinClick);
 }
 
@@ -283,7 +296,7 @@ var onMapPinClick = function (evt) {
   var pinClass = 'map__pin';
   var pinMainClass = 'map__pin--main';
 
-  if (evt.target.classList.contains(pinClass) === false || evt.target.classList.contains(pinMainClass) === true) {
+  if (evt.target.classList.contains(pinClass) === false || evt.target.classList.contains(pinMainClass) === true) { // если это не пин или это главный пин, то не реагируем
     return;
   }
 
@@ -294,7 +307,28 @@ var onMapPinClick = function (evt) {
   activePin = evt.target;
   activePin.classList.add('map__pin--active');
 
-  //alert('123');
+  if (typeof currentArticle !== 'undefined') {
+    closePopupAdArticle();
+  }
+
+  var ad = getAdByIndex(activePin.dataset.adIndex);
+  openPopupAdArticle(ad);
+}
+
+function openPopupAdArticle(ad) {
+
+  currentArticle = getAdArticle(ad, mapCardPoppupTemplate);
+  nodeBefore.insertBefore(currentArticle, nodeBeforeInsert);
+}
+function closePopupAdArticle() {
+
+  nodeBefore.removeChild(currentArticle);
+  currentArticle = undefined;
+}
+
+
+function getAdByIndex(index) {
+  return ads[index];
 }
 
 function Init() {
@@ -304,11 +338,14 @@ function Init() {
   adNoticeForm = document.querySelector('form.notice__form');
   mapMainPin = document.querySelector('.map__pin--main');
 
+  mapCardPoppupTemplate = document.querySelector('template').content.querySelector('article.map__card');
+
+  nodeBeforeInsert = document.querySelector('.map__filters-container');
+  nodeBefore = nodeBeforeInsert.parentNode;
+
   setNoticeFormDisable(adNoticeForm, true);
 
   mapMainPin.addEventListener('mouseup', onMainPinMouseUp);
-
-
 }
 
 function showAds() {
