@@ -32,6 +32,12 @@ var OFFER_FEATURES = [
   'conditioner'
 ];
 
+var map;
+var mapPins;
+var adNoticeForm;
+var mapMainPin;
+var ads;
+
 function generateRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
@@ -246,29 +252,69 @@ function getAdArticle(ad, template) {
   return article;
 }
 
+function setNoticeFormDisable(noticeForm, able) {
+
+  var fields = noticeForm.querySelectorAll('fieldset');
+
+  for (var i = 0; i < fields.length; i++) {
+
+    fields[i].disabled = able;
+  }
+}
+
+function mapMainPinBegin() {
+
+  map.classList.remove('map--faded');
+  adNoticeForm.classList.remove('notice__form--disabled');
+}
+
+var onMainPinMouseUp = function () {
+
+  mapMainPinBegin();
+  showAds();
+}
+
+function Init() {
+
+  map = document.querySelector('.map');
+  mapPins = document.querySelector('.map__pins');
+  adNoticeForm = document.querySelector('form.notice__form');
+  mapMainPin = document.querySelector('.map__pin--main');
+
+  setNoticeFormDisable(adNoticeForm, true);
+
+  mapMainPin.addEventListener('mouseup', onMainPinMouseUp);
+}
+
 function showAds() {
+
+  if (typeof ads !== 'undefined') {
+    return;
+  }
 
   var adsCount = 8;
 
-  var ads = generateAds(adsCount);
+  ads = generateAds(adsCount);
 
-  var map = document.querySelector('.map');
-  map.classList.remove('map--faded');
+  //var map = document.querySelector('.map');
+  //map.classList.remove('map--faded');
 
-  var mapPins = document.querySelector('.map__pins');
+  //var mapPins = document.querySelector('.map__pins');
 
   var fragmentPins = createPinsFragment(ads);
 
   mapPins.appendChild(fragmentPins);
 
-  var mapCardTemplate = document.querySelector('template').content.querySelector('article.map__card');
+  //var mapCardTemplate = document.querySelector('template').content.querySelector('article.map__card');
 
-  var article = getAdArticle(ads[0], mapCardTemplate);
+  /*var article = getAdArticle(ads[0], mapCardTemplate);
 
   var nodeBefore = document.querySelector('.map__filters-container');
   var nodeBeforeParent = nodeBefore.parentNode;
 
-  nodeBeforeParent.insertBefore(article, nodeBefore);
+  nodeBeforeParent.insertBefore(article, nodeBefore);*/
 }
 
-showAds();
+Init();
+
+//showAds();
