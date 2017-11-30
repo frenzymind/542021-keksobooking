@@ -43,6 +43,7 @@ var adPopup;
 var nodeBefore;
 var nodeBeforeInsert;
 var currentArticle;
+var popupCloseButton;
 
 function generateRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -301,11 +302,11 @@ var onMapPinClick = function (evt) {
   }
 
   if (typeof activePin !== 'undefined') {
-    activePin.classList.remove('map__pin--active');
+    setActivePinState(false);
   }
 
   activePin = evt.target;
-  activePin.classList.add('map__pin--active');
+  setActivePinState(true);
 
   if (typeof currentArticle !== 'undefined') {
     closePopupAdArticle();
@@ -315,17 +316,37 @@ var onMapPinClick = function (evt) {
   openPopupAdArticle(ad);
 }
 
+function setActivePinState(state) {
+
+  if (state === true) {
+    activePin.classList.add('map__pin--active');
+  }
+  else if (state === false) {
+    activePin.classList.remove('map__pin--active');
+  }
+}
+
+function onClosePopupClick() {
+
+  closePopupAdArticle();
+}
+
 function openPopupAdArticle(ad) {
 
   currentArticle = getAdArticle(ad, mapCardPoppupTemplate);
+
+  popupCloseButton = currentArticle.querySelector('.popup__close');
+  popupCloseButton.addEventListener('click', onClosePopupClick);
+
   nodeBefore.insertBefore(currentArticle, nodeBeforeInsert);
 }
+
 function closePopupAdArticle() {
 
   nodeBefore.removeChild(currentArticle);
   currentArticle = undefined;
+  setActivePinState(false);
 }
-
 
 function getAdByIndex(index) {
   return ads[index];
