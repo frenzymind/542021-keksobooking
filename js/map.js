@@ -301,19 +301,21 @@ var onMapPinClick = function (evt) {
     return;
   }
 
-  if (typeof activePin !== 'undefined') {
+  if (typeof activePin !== 'undefined') { // если был активный пин, снимаем с него класс активности
     setActivePinState(false);
   }
 
   activePin = evt.target;
   setActivePinState(true);
 
-  if (typeof currentArticle !== 'undefined') {
-    closePopupAdArticle();
-  }
-
   var ad = getAdByIndex(activePin.dataset.adIndex);
-  openPopupAdArticle(ad);
+
+  if (typeof currentArticle === 'undefined') {
+    openPopupAdArticle(ad);
+  }
+  else {
+    replacePopupAdArticle(ad);
+  }
 }
 
 function setActivePinState(state) {
@@ -346,6 +348,18 @@ function closePopupAdArticle() {
   nodeBefore.removeChild(currentArticle);
   currentArticle = undefined;
   setActivePinState(false);
+  activePin = undefined;
+}
+
+function replacePopupAdArticle(ad) {
+
+  var bufferArticle = getAdArticle(ad, mapCardPoppupTemplate);
+  nodeBefore.replaceChild(bufferArticle, currentArticle);
+
+  currentArticle = bufferArticle;
+
+  popupCloseButton = currentArticle.querySelector('.popup__close');
+  popupCloseButton.addEventListener('click', onClosePopupClick);
 }
 
 function getAdByIndex(index) {
