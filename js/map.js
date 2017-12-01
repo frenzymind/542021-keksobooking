@@ -40,11 +40,11 @@ var mapPins;
 var adNoticeForm;
 var mapMainPin;
 var ads;
-var activePin;
+var activePin = false;
 var mapCardPoppupTemplate;
 var nodeBefore;
 var nodeBeforeInsert;
-var currentArticle;
+var currentArticle = false;
 var popupCloseButton;
 
 function generateRandomInt(min, max) {
@@ -146,7 +146,7 @@ function createAd(number) {
 
 function generateAds(count) {
 
-  var ads = [];
+  ads = [];
   var currentNumber = 0;
 
   for (var i = 0; i < count; i++, currentNumber++) {
@@ -191,7 +191,7 @@ function createDomPinElement(ad, index) {
   return button;
 }
 
-function createPinsFragment(ads) {
+function createPinsFragment() {
 
   var fragment = document.createDocumentFragment();
 
@@ -300,7 +300,7 @@ function onPinKeyDown(evt) {
 
     var ad = getAdByIndex(evt.target.dataset.adIndex);
 
-    if (typeof currentArticle === 'undefined') {
+    if (currentArticle === false) {
       openPopupAdArticle(ad);
     } else {
       replacePopupAdArticle(ad);
@@ -317,7 +317,7 @@ function onMapPinClick(evt) {
     return;
   }
 
-  if (typeof activePin !== 'undefined') { // если был активный пин, снимаем с него класс активности
+  if (activePin !== false) { // если был активный пин, снимаем с него класс активности
     setActivePinState(false);
   }
 
@@ -326,7 +326,7 @@ function onMapPinClick(evt) {
 
   var ad = getAdByIndex(activePin.dataset.adIndex);
 
-  if (typeof currentArticle === 'undefined') {
+  if (currentArticle === false) {
     openPopupAdArticle(ad);
   } else {
     replacePopupAdArticle(ad);
@@ -337,8 +337,7 @@ function setActivePinState(state) {
 
   if (state === true) {
     activePin.classList.add('map__pin--active');
-  }
-  else if (state === false) {
+  } else if (state === false) {
     activePin.classList.remove('map__pin--active');
   }
 }
@@ -383,9 +382,9 @@ function openPopupAdArticle(ad) {
 function closePopupAdArticle() {
 
   nodeBefore.removeChild(currentArticle);
-  currentArticle = undefined;
+  currentArticle = false;
   setActivePinState(false);
-  activePin = undefined;
+  activePin = false;
 
   document.removeEventListener('keydown', onPopupKeyDown);
 }
@@ -431,7 +430,7 @@ function showAds() {
 
   ads = generateAds(adsCount);
 
-  var fragmentPins = createPinsFragment(ads);
+  var fragmentPins = createPinsFragment();
 
   mapPins.appendChild(fragmentPins);
 }
