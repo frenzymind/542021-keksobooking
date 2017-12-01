@@ -289,7 +289,7 @@ function mapMainPinBegin() {
   document.addEventListener('click', onMapPinClick);
 }
 
-var onMainPinMouseUp = function () {
+function onMainPinMouseUp() {
 
   mapMainPinBegin();
   setNoticeFormDisable(adNoticeForm, false);
@@ -311,7 +311,7 @@ function onPinKeyDown(evt) {
   }
 }
 
-var onMapPinClick = function (evt) {
+function onMapPinClick(evt) {
 
   var pinClass = 'map__pin';
   var pinMainClass = 'map__pin--main';
