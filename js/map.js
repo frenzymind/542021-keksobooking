@@ -312,8 +312,9 @@ function onMapPinClick(evt) {
 
   var pinClass = 'map__pin';
   var pinMainClass = 'map__pin--main';
+  var closerElement = evt.target.closest('button.map__pin.map__pin--main') || evt.target.closest('button.map__pin');
 
-  if (evt.target.classList.contains(pinClass) === false || evt.target.classList.contains(pinMainClass) === true) { // если это не пин или это главный пин, то не реагируем
+  if (closerElement === null || closerElement.classList.contains(pinMainClass) === true) { // если это не пин или это главный пин, то не реагируем
     return;
   }
 
@@ -321,7 +322,7 @@ function onMapPinClick(evt) {
     setActivePinState(false);
   }
 
-  activePin = evt.target;
+  activePin = closerElement;
   setActivePinState(true);
 
   var ad = getAdByIndex(activePin.dataset.adIndex);
