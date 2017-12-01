@@ -32,6 +32,9 @@ var OFFER_FEATURES = [
   'conditioner'
 ];
 
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
 var map;
 var mapPins;
 var adNoticeForm;
@@ -184,6 +187,7 @@ function createDomPinElement(ad, index) {
   img.draggable = false;
 
   button.appendChild(img);
+  button.addEventListener('keydown', onPinKeyDown);
 
   return button;
 }
@@ -292,6 +296,21 @@ var onMainPinMouseUp = function () {
   showAds();
 }
 
+function onPinKeyDown(evt) {
+
+  if (evt.keyCode === ENTER_KEYCODE) {
+
+    var ad = getAdByIndex(evt.target.dataset.adIndex);
+
+    if (typeof currentArticle === 'undefined') {
+      openPopupAdArticle(ad);
+    }
+    else {
+      replacePopupAdArticle(ad);
+    }
+  }
+}
+
 var onMapPinClick = function (evt) {
 
   var pinClass = 'map__pin';
@@ -333,12 +352,28 @@ function onClosePopupClick() {
   closePopupAdArticle();
 }
 
+function onClosePopupKeyDown() {
+
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closePopupAdArticle();
+  }
+}
+
+function onPopupKeyDown() {
+
+  if (evt.keyCode === ESC_KEYCODE) {
+    closePopupAdArticle();
+  }
+}
+
 function openPopupAdArticle(ad) {
 
   currentArticle = getAdArticle(ad, mapCardPoppupTemplate);
+  currentArticle = addEventListener('keydown', onPopupKeyDown);
 
   popupCloseButton = currentArticle.querySelector('.popup__close');
   popupCloseButton.addEventListener('click', onClosePopupClick);
+  popupCloseButton.addEventListener('keydown', onClosePopupKeyDown);
 
   nodeBefore.insertBefore(currentArticle, nodeBeforeInsert);
 }
@@ -357,6 +392,8 @@ function replacePopupAdArticle(ad) {
   nodeBefore.replaceChild(bufferArticle, currentArticle);
 
   currentArticle = bufferArticle;
+
+  currentArticle = addEventListener('keydown', onPopupKeyDown);
 
   popupCloseButton = currentArticle.querySelector('.popup__close');
   popupCloseButton.addEventListener('click', onClosePopupClick);
@@ -393,25 +430,9 @@ function showAds() {
 
   ads = generateAds(adsCount);
 
-  //var map = document.querySelector('.map');
-  //map.classList.remove('map--faded');
-
-  //var mapPins = document.querySelector('.map__pins');
-
   var fragmentPins = createPinsFragment(ads);
 
   mapPins.appendChild(fragmentPins);
-
-  //var mapCardTemplate = document.querySelector('template').content.querySelector('article.map__card');
-
-  /*var article = getAdArticle(ads[0], mapCardTemplate);
-
-  var nodeBefore = document.querySelector('.map__filters-container');
-  var nodeBeforeParent = nodeBefore.parentNode;
-
-  nodeBeforeParent.insertBefore(article, nodeBefore);*/
 }
 
 Init();
-
-//showAds();
