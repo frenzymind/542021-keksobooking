@@ -352,28 +352,34 @@ function onClosePopupClick() {
   closePopupAdArticle();
 }
 
-function onClosePopupKeyDown() {
+function onClosePopupKeyDown(evt) {
 
   if (evt.keyCode === ENTER_KEYCODE) {
     closePopupAdArticle();
   }
 }
 
-function onPopupKeyDown() {
+function onPopupKeyDown(evt) {
 
   if (evt.keyCode === ESC_KEYCODE) {
     closePopupAdArticle();
   }
 }
 
-function openPopupAdArticle(ad) {
-
-  currentArticle = getAdArticle(ad, mapCardPoppupTemplate);
-  currentArticle = addEventListener('keydown', onPopupKeyDown);
+function setPopupCloseButtonEvents() {
 
   popupCloseButton = currentArticle.querySelector('.popup__close');
   popupCloseButton.addEventListener('click', onClosePopupClick);
   popupCloseButton.addEventListener('keydown', onClosePopupKeyDown);
+
+  document.addEventListener('keydown', onPopupKeyDown);
+}
+
+function openPopupAdArticle(ad) {
+
+  currentArticle = getAdArticle(ad, mapCardPoppupTemplate);
+
+  setPopupCloseButtonEvents();
 
   nodeBefore.insertBefore(currentArticle, nodeBeforeInsert);
 }
@@ -384,6 +390,8 @@ function closePopupAdArticle() {
   currentArticle = undefined;
   setActivePinState(false);
   activePin = undefined;
+
+  document.removeEventListener('keydown', onPopupKeyDown);
 }
 
 function replacePopupAdArticle(ad) {
@@ -393,10 +401,7 @@ function replacePopupAdArticle(ad) {
 
   currentArticle = bufferArticle;
 
-  currentArticle = addEventListener('keydown', onPopupKeyDown);
-
-  popupCloseButton = currentArticle.querySelector('.popup__close');
-  popupCloseButton.addEventListener('click', onClosePopupClick);
+  setPopupCloseButtonEvents();
 }
 
 function getAdByIndex(index) {
