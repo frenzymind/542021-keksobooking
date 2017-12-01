@@ -32,6 +32,21 @@ var OFFER_FEATURES = [
   'conditioner'
 ];
 
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
+var map;
+var mapPins;
+var adNoticeForm;
+var mapMainPin;
+var ads;
+var activePin = false;
+var mapCardPoppupTemplate;
+var nodeBefore;
+var nodeBeforeInsert;
+var currentArticle = false;
+var popupCloseButton;
+
 function generateRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
@@ -131,7 +146,7 @@ function createAd(number) {
 
 function generateAds(count) {
 
-  var ads = [];
+  ads = [];
   var currentNumber = 0;
 
   for (var i = 0; i < count; i++, currentNumber++) {
@@ -156,12 +171,13 @@ function scaleY(y) {
   return y + mapPinYCorrection;
 }
 
-function createDomPinElement(ad) {
+function createDomPinElement(ad, index) {
 
   var button = document.createElement('button');
   button.style.left = scaleX(ad.location.x) + 'px';
   button.style.top = scaleY(ad.location.y) + 'px';
   button.classList.add('map__pin');
+  button.dataset.adIndex = index;
 
   var img = document.createElement('img');
   img.src = ad.author.avatar;
@@ -170,16 +186,17 @@ function createDomPinElement(ad) {
   img.draggable = false;
 
   button.appendChild(img);
+  button.addEventListener('keydown', onPinKeyDown);
 
   return button;
 }
 
-function createPinsFragment(ads) {
+function createPinsFragment() {
 
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < ads.length; i++) {
-    fragment.appendChild(createDomPinElement(ads[i]));
+    fragment.appendChild(createDomPinElement(ads[i], i));
   }
 
   return fragment;
@@ -246,29 +263,176 @@ function getAdArticle(ad, template) {
   return article;
 }
 
+function setNoticeFormDisable(noticeForm, able) {
+
+  var formDisableClass = 'notice__form--disabled';
+
+  if (able === false) {
+    adNoticeForm.classList.remove(formDisableClass);
+  } else {
+    adNoticeForm.classList.add(formDisableClass);
+  }
+
+  var fields = noticeForm.querySelectorAll('fieldset');
+
+  for (var i = 0; i < fields.length; i++) {
+
+    fields[i].disabled = able;
+  }
+}
+
+function mapMainPinBegin() {
+
+  map.classList.remove('map--faded');
+  document.addEventListener('click', onMapPinClick);
+}
+
+function onMainPinMouseUp() {
+
+  mapMainPinBegin();
+  setNoticeFormDisable(adNoticeForm, false);
+  showAds();
+}
+
+function onPinKeyDown(evt) {
+
+  if (evt.keyCode === ENTER_KEYCODE) {
+
+    var ad = getAdByIndex(evt.target.dataset.adIndex);
+
+    if (currentArticle === false) {
+      openPopupAdArticle(ad);
+    } else {
+      replacePopupAdArticle(ad);
+    }
+  }
+}
+
+function onMapPinClick(evt) {
+
+  var pinMainClass = 'map__pin--main';
+  var closerElement = evt.target.closest('button.map__pin.map__pin--main') || evt.target.closest('button.map__pin');
+
+  if (closerElement === null || closerElement.classList.contains(pinMainClass) === true) { // если это не пин или это главный пин, то не реагируем
+    return;
+  }
+
+  if (activePin !== false) { // если был активный пин, снимаем с него класс активности
+    setActivePinState(false);
+  }
+
+  activePin = closerElement;
+  setActivePinState(true);
+
+  var ad = getAdByIndex(activePin.dataset.adIndex);
+
+  if (currentArticle === false) {
+    openPopupAdArticle(ad);
+  } else {
+    replacePopupAdArticle(ad);
+  }
+}
+
+function setActivePinState(state) {
+
+  if (state === true) {
+    activePin.classList.add('map__pin--active');
+  } else if (state === false) {
+    activePin.classList.remove('map__pin--active');
+  }
+}
+
+function onClosePopupClick() {
+
+  closePopupAdArticle();
+}
+
+function onClosePopupKeyDown(evt) {
+
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closePopupAdArticle();
+  }
+}
+
+function onPopupKeyDown(evt) {
+
+  if (evt.keyCode === ESC_KEYCODE) {
+    closePopupAdArticle();
+  }
+}
+
+function setPopupCloseButtonEvents() {
+
+  popupCloseButton = currentArticle.querySelector('.popup__close');
+  popupCloseButton.addEventListener('click', onClosePopupClick);
+  popupCloseButton.addEventListener('keydown', onClosePopupKeyDown);
+
+  document.addEventListener('keydown', onPopupKeyDown);
+}
+
+function openPopupAdArticle(ad) {
+
+  currentArticle = getAdArticle(ad, mapCardPoppupTemplate);
+
+  setPopupCloseButtonEvents();
+
+  nodeBefore.insertBefore(currentArticle, nodeBeforeInsert);
+}
+
+function closePopupAdArticle() {
+
+  nodeBefore.removeChild(currentArticle);
+  currentArticle = false;
+  setActivePinState(false);
+  activePin = false;
+
+  document.removeEventListener('keydown', onPopupKeyDown);
+}
+
+function replacePopupAdArticle(ad) {
+
+  var bufferArticle = getAdArticle(ad, mapCardPoppupTemplate);
+  nodeBefore.replaceChild(bufferArticle, currentArticle);
+
+  currentArticle = bufferArticle;
+
+  setPopupCloseButtonEvents();
+}
+
+function getAdByIndex(index) {
+  return ads[index];
+}
+
+function init() {
+
+  map = document.querySelector('.map');
+  mapPins = document.querySelector('.map__pins');
+  adNoticeForm = document.querySelector('form.notice__form');
+  mapMainPin = document.querySelector('.map__pin--main');
+
+  mapCardPoppupTemplate = document.querySelector('template').content.querySelector('article.map__card');
+
+  nodeBeforeInsert = document.querySelector('.map__filters-container');
+  nodeBefore = nodeBeforeInsert.parentNode;
+
+  setNoticeFormDisable(adNoticeForm, true);
+
+  mapMainPin.addEventListener('mouseup', onMainPinMouseUp);
+}
+
 function showAds() {
+
+  if (typeof ads !== 'undefined') {
+    return;
+  }
 
   var adsCount = 8;
 
-  var ads = generateAds(adsCount);
+  ads = generateAds(adsCount);
 
-  var map = document.querySelector('.map');
-  map.classList.remove('map--faded');
-
-  var mapPins = document.querySelector('.map__pins');
-
-  var fragmentPins = createPinsFragment(ads);
+  var fragmentPins = createPinsFragment();
 
   mapPins.appendChild(fragmentPins);
-
-  var mapCardTemplate = document.querySelector('template').content.querySelector('article.map__card');
-
-  var article = getAdArticle(ads[0], mapCardTemplate);
-
-  var nodeBefore = document.querySelector('.map__filters-container');
-  var nodeBeforeParent = nodeBefore.parentNode;
-
-  nodeBeforeParent.insertBefore(article, nodeBefore);
 }
 
-showAds();
+init();
