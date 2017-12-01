@@ -431,7 +431,7 @@ function showAds() {
     return;
   }
 
-  var adsCount = 8;
+  var adsCount = 8;;
 
   ads = generateAds(adsCount);
 
