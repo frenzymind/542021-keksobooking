@@ -42,7 +42,6 @@ var mapMainPin;
 var ads;
 var activePin;
 var mapCardPoppupTemplate;
-var adPopup;
 var nodeBefore;
 var nodeBeforeInsert;
 var currentArticle;
@@ -270,8 +269,7 @@ function setNoticeFormDisable(noticeForm, able) {
 
   if (able === false) {
     adNoticeForm.classList.remove(formDisableClass);
-  }
-  else {
+  } else {
     adNoticeForm.classList.add(formDisableClass);
   }
 
@@ -304,8 +302,7 @@ function onPinKeyDown(evt) {
 
     if (typeof currentArticle === 'undefined') {
       openPopupAdArticle(ad);
-    }
-    else {
+    } else {
       replacePopupAdArticle(ad);
     }
   }
@@ -331,8 +328,7 @@ function onMapPinClick(evt) {
 
   if (typeof currentArticle === 'undefined') {
     openPopupAdArticle(ad);
-  }
-  else {
+  } else {
     replacePopupAdArticle(ad);
   }
 }
@@ -408,7 +404,7 @@ function getAdByIndex(index) {
   return ads[index];
 }
 
-function Init() {
+function init() {
 
   map = document.querySelector('.map');
   mapPins = document.querySelector('.map__pins');
@@ -440,4 +436,4 @@ function showAds() {
   mapPins.appendChild(fragmentPins);
 }
 
-Init();
+init();
