@@ -310,7 +310,6 @@ function onPinKeyDown(evt) {
 
 function onMapPinClick(evt) {
 
-  var pinClass = 'map__pin';
   var pinMainClass = 'map__pin--main';
   var closerElement = evt.target.closest('button.map__pin.map__pin--main') || evt.target.closest('button.map__pin');
 
