@@ -2,6 +2,13 @@
 
 (function() {
 
+    var HOUSING_TYPE_MIN_PRICE = {
+    'flat' : 1000,
+    'bungalo' : 0,
+    'house' : 5000,
+    'palace' : 10000
+  };
+
   var noticeAdForm = document.querySelector('form.notice__form');
   var addressFiled = noticeAdForm.querySelector('fieldset input#address');
   var titleFiled = noticeAdForm.querySelector('fieldset input#title');
@@ -11,16 +18,13 @@
   var housingType = noticeAdForm.querySelector('fieldset select#type');
   var roomsCount = noticeAdForm.querySelector('fieldset select#room_number');
   var guestCount = noticeAdForm.querySelector('fieldset select#capacity');
+  //var buttonSubmit = noticeAdForm.querySelector('fieldset select#capacity');
 
-  var HOUSING_TYPE_MIN_PRICE = {
-    'flat' : 1000,
-    'bungalo' : 0,
-    'house' : 5000,
-    'palace' : 10000
-  };
+  noticeAdForm.action = 'https://js.dump.academy/keksobooking';
 
-  addressFiled.disabled = true;
+  addressFiled.readOnly = true;
   addressFiled.required = true;
+  addressFiled.value = "123"; // иначе форма не верна, что-то в ней долждно быть. Хотя сама readonly
 
   titleFiled.required = true;
   titleFiled.minLength = 30;
@@ -63,6 +67,10 @@
     }
 
     setGuestCountByValue(roomValue);
+  }
+
+  function onSubmitButtonClick() {
+
   }
 
   function setGuestCountByValue(value) {
