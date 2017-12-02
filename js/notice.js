@@ -18,7 +18,7 @@
   var housingType = noticeAdForm.querySelector('fieldset select#type');
   var roomsCount = noticeAdForm.querySelector('fieldset select#room_number');
   var guestCount = noticeAdForm.querySelector('fieldset select#capacity');
-  //var buttonSubmit = noticeAdForm.querySelector('fieldset select#capacity');
+  var buttonSubmit = noticeAdForm.querySelector('fieldset select#capacity');
 
   noticeAdForm.action = 'https://js.dump.academy/keksobooking';
 
@@ -62,9 +62,9 @@
     var selectedIndex = roomsCount.selectedIndex;
     var roomValue = roomsCount.options[selectedIndex].value;
 
-    if (roomValue === '100') {
+    /*if (roomValue === '100') {
       roomValue = '0';
-    }
+    }*/
 
     setGuestCountByValue(roomValue);
   }
@@ -75,14 +75,36 @@
 
   function setGuestCountByValue(value) {
 
+    var foundSomething = false;
+    var zeroElement;
+
     for (var i = 0; i < guestCount.children.length; i++) {
 
-      if (guestCount.children[i].value === value) {
+      var selectValue = guestCount.children[i].value;
+      var selectElement = guestCount.children[i];
 
-        guestCount.selectedIndex = i;
-        break;
+      if (selectValue === '0') {
+        zeroElement = selectElement;
+        zeroElement.classList.add('hidden');
+        continue;
       }
+
+      if (value >= selectValue) {
+
+        selectElement.classList.remove('hidden');
+        foundSomething = true;
+
+      } else {
+
+        selectElement.classList.add('hidden');
+      }
+
     }
+
+    if (foundSomething === false) {
+      zeroElement.classList.remove('hidden');
+    }
+    //var t = 0;
   }
 
   function syncTimeInOut(timeField, index) {
