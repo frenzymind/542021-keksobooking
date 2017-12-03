@@ -62,10 +62,6 @@
     var selectedIndex = roomsCount.selectedIndex;
     var roomValue = roomsCount.options[selectedIndex].value;
 
-    /*if (roomValue === '100') {
-      roomValue = '0';
-    }*/
-
     setGuestCountByValue(roomValue);
   }
 
@@ -89,7 +85,7 @@
         continue;
       }
 
-      if (value >= selectValue) {
+      if (+value <= +selectValue) {
 
         selectElement.classList.remove('hidden');
         foundSomething = true;
@@ -104,7 +100,7 @@
     if (foundSomething === false) {
       zeroElement.classList.remove('hidden');
     }
-    //var t = 0;
+
   }
 
   function syncTimeInOut(timeField, index) {
@@ -116,8 +112,4 @@
 
     priceFiled.min = price;
   }
-
-  var t = 0;
-
-
 })();
