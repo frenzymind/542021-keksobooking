@@ -2,12 +2,15 @@
 
 (function() {
 
-    var HOUSING_TYPE_MIN_PRICE = {
+  var HOUSING_TYPE_MIN_PRICE = {
     'flat' : 1000,
     'bungalo' : 0,
     'house' : 5000,
     'palace' : 10000
   };
+
+  var BORDER_ERROR_COLOR = '#cc0000';
+  var BORDER_ERROR_WIDTH = '1.5px';
 
   var noticeAdForm = document.querySelector('form.notice__form');
   var addressFiled = noticeAdForm.querySelector('fieldset input#address');
@@ -18,7 +21,7 @@
   var housingType = noticeAdForm.querySelector('fieldset select#type');
   var roomsCount = noticeAdForm.querySelector('fieldset select#room_number');
   var guestCount = noticeAdForm.querySelector('fieldset select#capacity');
-  var buttonSubmit = noticeAdForm.querySelector('fieldset select#capacity');
+  var buttonSubmit = noticeAdForm.querySelector('fieldset button.form__submit');
 
   noticeAdForm.action = 'https://js.dump.academy/keksobooking';
 
@@ -39,6 +42,7 @@
   timeOut.addEventListener('change', onTimeOutChange);
   housingType.addEventListener('change', onTypeChange);
   roomsCount.addEventListener('change', onRoomsChange);
+  buttonSubmit.addEventListener('click', onSubmitButtonClick);
 
   function onTimeInChange() {
 
@@ -65,8 +69,40 @@
     setGuestCountByValue(roomValue);
   }
 
-  function onSubmitButtonClick() {
+  function onSubmitButtonClick(evt) {
 
+    checkFileds();
+  }
+
+  function checkFileds() {
+
+    var requiredFields = noticeAdForm.querySelectorAll('input[required]');
+
+    for (var i = 0; i < requiredFields.length; i++) {
+
+      var selectElement = requiredFields[i];
+
+      if (!selectElement.checkValidity()) {
+
+        setFieldValid(selectElement, false);
+      } else {
+
+        setFieldValid(selectElement, true);
+      }
+    }
+  }
+
+  function setFieldValid(filed, valid) {
+
+    if (valid) {
+
+      filed.style.borderColor = '';
+      filed.style.borderWidth = '';
+    } else {
+
+      filed.style.borderColor = BORDER_ERROR_COLOR;
+      filed.style.borderWidth = BORDER_ERROR_WIDTH;
+    }
   }
 
   function setGuestCountByValue(value) {
@@ -101,6 +137,7 @@
       zeroElement.classList.remove('hidden');
     }
 
+    guestCount.selectedIndex = guestCount.querySelector('option:not(.hidden)').index; //первый не скрытый элемент
   }
 
   function syncTimeInOut(timeField, index) {
