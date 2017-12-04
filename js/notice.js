@@ -1,12 +1,12 @@
 'use strict';
 
-(function() {
+(function () {
 
   var HOUSING_TYPE_MIN_PRICE = {
-    'flat' : 1000,
-    'bungalo' : 0,
-    'house' : 5000,
-    'palace' : 10000
+    'flat': 1000,
+    'bungalo': 0,
+    'house': 5000,
+    'palace': 10000
   };
 
   var BORDER_ERROR_COLOR = '#cc0000';
@@ -27,7 +27,7 @@
 
   addressFiled.readOnly = true;
   addressFiled.required = true;
-  addressFiled.value = "123"; // иначе форма не верна, что-то в ней долждно быть. Хотя сама readonly
+  addressFiled.value = '123'; // иначе форма не верна, что-то в ней долждно быть. Хотя сама readonly
 
   titleFiled.required = true;
   titleFiled.minLength = 30;
@@ -69,7 +69,7 @@
     setGuestCountByValue(roomValue);
   }
 
-  function onSubmitButtonClick(evt) {
+  function onSubmitButtonClick() {
 
     checkFileds();
   }
@@ -137,7 +137,7 @@
       zeroElement.classList.remove('hidden');
     }
 
-    guestCount.selectedIndex = guestCount.querySelector('option:not(.hidden)').index; //первый не скрытый элемент
+    guestCount.selectedIndex = guestCount.querySelector('option:not(.hidden)').index; // первый не скрытый элемент
   }
 
   function syncTimeInOut(timeField, index) {
