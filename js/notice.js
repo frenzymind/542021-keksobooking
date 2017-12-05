@@ -100,18 +100,20 @@
     var foundSomething = false;
     var zeroElement;
 
+    value = parseInt(value, 10);
+
     for (var i = 0; i < guestCount.children.length; i++) {
 
-      var selectValue = guestCount.children[i].value;
+      var selectValue = parseInt(guestCount.children[i].value, 10);
       var selectElement = guestCount.children[i];
 
-      if (selectValue === '0') {
+      if (selectValue === 0) {
         zeroElement = selectElement;
         zeroElement.classList.add('hidden');
         continue;
       }
 
-      if (+value <= +selectValue) {
+      if (value >= selectValue && value !== 100) {
 
         selectElement.classList.remove('hidden');
         foundSomething = true;
@@ -120,7 +122,6 @@
 
         selectElement.classList.add('hidden');
       }
-
     }
 
     if (foundSomething === false) {
