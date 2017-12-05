@@ -91,15 +91,8 @@
 
   function setFieldValid(filed, valid) {
 
-    if (valid) {
-
-      filed.style.borderColor = '';
-      filed.style.borderWidth = '';
-    } else {
-
-      filed.style.borderColor = BORDER_ERROR_COLOR;
-      filed.style.borderWidth = BORDER_ERROR_WIDTH;
-    }
+    filed.style.borderColor = valid ? '' : BORDER_ERROR_COLOR;
+    filed.style.borderWidth = valid ? '' : BORDER_ERROR_WIDTH;
   }
 
   function setGuestCountByValue(value) {
