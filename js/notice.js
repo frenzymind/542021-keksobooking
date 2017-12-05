@@ -23,22 +23,7 @@
   var guestCount = noticeAdForm.querySelector('fieldset select#capacity');
   var buttonSubmit = noticeAdForm.querySelector('fieldset button.form__submit');
 
-  noticeAdForm.action = 'https://js.dump.academy/keksobooking';
-
-  addressFiled.readOnly = true;
-  addressFiled.required = true;
-  addressFiled.value = '123'; // иначе форма не верна, что-то в ней долждно быть. Хотя сама readonly
-
-  titleFiled.required = true;
-  titleFiled.minLength = 30;
-  titleFiled.maxLength = 100;
-
-  priceFiled.required = true;
-  priceFiled.min = 0;
-  priceFiled.max = 1000000;
-  priceFiled.placeholder = 1000;
-
-  timeIn. addEventListener('change', onTimeInChange);
+  timeIn.addEventListener('change', onTimeInChange);
   timeOut.addEventListener('change', onTimeOutChange);
   housingType.addEventListener('change', onTypeChange);
   roomsCount.addEventListener('change', onRoomsChange);
@@ -72,6 +57,24 @@
   function onSubmitButtonClick() {
 
     checkFileds();
+  }
+
+  function initAddNoticeForm() {
+
+    noticeAdForm.action = 'https://js.dump.academy/keksobooking';
+
+    addressFiled.readOnly = true;
+    addressFiled.required = true;
+    addressFiled.value = '123'; // иначе форма не верна, что-то в ней долждно быть. Хотя сама readonly
+
+    titleFiled.required = true;
+    titleFiled.minLength = 30;
+    titleFiled.maxLength = 100;
+
+    priceFiled.required = true;
+    priceFiled.min = 0;
+    priceFiled.max = 1000000;
+    priceFiled.placeholder = 1000;
   }
 
   function checkFileds() {
