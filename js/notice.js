@@ -128,7 +128,7 @@
       zeroElement.classList.remove('hidden');
     }
 
-    guestCount.selectedIndex = guestCount.querySelector('option:not(.hidden)').index; // первый не скрытый элемент
+    guestCount.selectedIndex = guestCount.querySelector('option:not(.hidden)').index; // первый не скрытый элемент из списка
   }
 
   function syncTimeInOut(timeField, index) {
