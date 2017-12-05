@@ -84,13 +84,8 @@
 
       var selectElement = requiredFields[i];
 
-      if (!selectElement.checkValidity()) {
-
-        setFieldValid(selectElement, false);
-      } else {
-
-        setFieldValid(selectElement, true);
-      }
+      var isValid = selectElement.checkValidity();
+      setFieldValid(selectElement, isValid);
     }
   }
 
