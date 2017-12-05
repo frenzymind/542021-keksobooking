@@ -23,6 +23,8 @@
   var guestCount = noticeAdForm.querySelector('fieldset select#capacity');
   var buttonSubmit = noticeAdForm.querySelector('fieldset button.form__submit');
 
+  initAddNoticeForm();
+
   timeIn.addEventListener('change', onTimeInChange);
   timeOut.addEventListener('change', onTimeOutChange);
   housingType.addEventListener('change', onTypeChange);
@@ -41,15 +43,12 @@
 
   function onTypeChange() {
 
-    var selectedIndex = housingType.selectedIndex;
-
-    setMinPrice(HOUSING_TYPE_MIN_PRICE[housingType.options[selectedIndex].value]);
+    setMinPrice(HOUSING_TYPE_MIN_PRICE[housingType.value]);
   }
 
   function onRoomsChange() {
 
-    var selectedIndex = roomsCount.selectedIndex;
-    var roomValue = roomsCount.options[selectedIndex].value;
+    var roomValue = roomsCount.value;
 
     setGuestCountByValue(roomValue);
   }
