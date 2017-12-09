@@ -159,6 +159,8 @@
       currentArticle = bufferArticle;
 
       setPopupCloseButtonEvents(currentArticle);
+
+      return currentArticle;
     }
   };
 

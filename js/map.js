@@ -235,7 +235,7 @@ function onMapPinClick(evt) {
   if (currentArticle === false) {
     currentArticle = card.openPopupAdArticle(ad);
   } else {
-    card.replacePopupAdArticle(ad, currentArticle);
+    currentArticle = card.replacePopupAdArticle(ad, currentArticle);
   }
 
   //setPopupCloseButtonEvents();
