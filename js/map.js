@@ -35,9 +35,7 @@ var OFFER_FEATURES = [
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 
-var currentArticle = false;
-
-window.map = (function () {
+(function () {
 
 var map;
 var mapPins;
@@ -45,6 +43,7 @@ var adNoticeForm;
 var mapMainPin;
 var ads;
 var activePin = false;
+var currentArticle = false;
 //var mapCardPoppupTemplate;
 //var nodeBefore;
 //var nodeBeforeInsert;
@@ -208,9 +207,9 @@ function onPinKeyDown(evt) {
     var ad = getAdByIndex(evt.target.dataset.adIndex);
 
     if (currentArticle === false) {
-      openPopupAdArticle(ad);
+      currentArticle = openPopupAdArticle(ad);
     } else {
-      replacePopupAdArticle(ad);
+      replacePopupAdArticle(ad, currentArticle);
     }
   }
 }
@@ -234,9 +233,9 @@ function onMapPinClick(evt) {
   var ad = getAdByIndex(activePin.dataset.adIndex);
 
   if (currentArticle === false) {
-    window.card.openPopupAdArticle(ad);
+    currentArticle = card.openPopupAdArticle(ad);
   } else {
-    window.card.replacePopupAdArticle(ad);
+    card.replacePopupAdArticle(ad, currentArticle);
   }
 
   //setPopupCloseButtonEvents();

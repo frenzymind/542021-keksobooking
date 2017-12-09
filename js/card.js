@@ -93,33 +93,35 @@
     }
   }
 
-  function setPopupCloseButtonEvents() {
+  function setPopupCloseButtonEvents(currentArticle) {
 
     popupCloseButton = currentArticle.querySelector('.popup__close');
     popupCloseButton.addEventListener('click', onClosePopupClick);
     popupCloseButton.addEventListener('keydown', onClosePopupKeyDown);
 
-    document.addEventListener('keydown', onPopupKeyDown);
+    //document.addEventListener('keydown', onPopupKeyDown);
   }
 
-  function openPopupAdArticle(ad) {
+  /*function openPopupAdArticle(ad) {
 
-    currentArticle = getAdArticle(ad);
+    var currentArticle = getAdArticle(ad);
 
-    setPopupCloseButtonEvents();
+    setPopupCloseButtonEvents(currentArticle);
 
     nodeBefore.insertBefore(currentArticle, nodeBeforeInsert);
-  }
 
-  function replacePopupAdArticle(ad) {
+    return currentArticle;
+  }*/
+
+  /*function replacePopupAdArticle(ad, currentArticle) {
 
     var bufferArticle = getAdArticle(ad);
     nodeBefore.replaceChild(bufferArticle, currentArticle);
 
     currentArticle = bufferArticle;
 
-    setPopupCloseButtonEvents();
-  }
+    setPopupCloseButtonEvents(currentArticle);
+  }*/
 
   function closePopupAdArticle() {
 
@@ -135,7 +137,13 @@
 
     openPopupAdArticle : function (ad) {
 
-      openPopupAdArticle(ad);
+        var currentArticle = getAdArticle(ad);
+
+        setPopupCloseButtonEvents(currentArticle);
+
+        nodeBefore.insertBefore(currentArticle, nodeBeforeInsert);
+
+        return currentArticle;
     },
 
     closePopupAdArticle : function () {
@@ -143,9 +151,14 @@
       closePopupAdArticle();
     },
 
-    replacePopupAdArticle : function (ad) {
+    replacePopupAdArticle : function (ad, currentArticle) {
 
-      replacePopupAdArticle(ad);
+      var bufferArticle = getAdArticle(ad);
+      nodeBefore.replaceChild(bufferArticle, currentArticle);
+
+      currentArticle = bufferArticle;
+
+      setPopupCloseButtonEvents(currentArticle);
     }
   };
 
