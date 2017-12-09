@@ -71,8 +71,8 @@
   function onClosePopupClick() {
 
     closePopupAdArticle();
-    setActivePinState(false);
-    activePin = false;
+    /*setActivePinState(false);
+    activePin = false;*/
   }
 
   function onClosePopupKeyDown(evt) {
@@ -102,35 +102,50 @@
     document.addEventListener('keydown', onPopupKeyDown);
   }
 
+  function openPopupAdArticle(ad) {
+
+    currentArticle = getAdArticle(ad);
+
+    setPopupCloseButtonEvents();
+
+    nodeBefore.insertBefore(currentArticle, nodeBeforeInsert);
+  }
+
+  function replacePopupAdArticle(ad) {
+
+    var bufferArticle = getAdArticle(ad);
+    nodeBefore.replaceChild(bufferArticle, currentArticle);
+
+    currentArticle = bufferArticle;
+
+    setPopupCloseButtonEvents();
+  }
+
+  function closePopupAdArticle() {
+
+    nodeBefore.removeChild(currentArticle);
+    currentArticle = false;
+    /*setActivePinState(false);
+    activePin = false;*/
+
+    document.removeEventListener('keydown', onPopupKeyDown);
+  }
+
   window.card = {
 
     openPopupAdArticle : function (ad) {
 
-      currentArticle = getAdArticle(ad);
-
-      setPopupCloseButtonEvents();
-
-      nodeBefore.insertBefore(currentArticle, nodeBeforeInsert);
+      openPopupAdArticle(ad);
     },
 
     closePopupAdArticle : function () {
 
-      nodeBefore.removeChild(currentArticle);
-      currentArticle = false;
-      /*setActivePinState(false);
-      activePin = false;*/
-
-      document.removeEventListener('keydown', onPopupKeyDown);
+      closePopupAdArticle();
     },
 
     replacePopupAdArticle : function (ad) {
 
-      var bufferArticle = getAdArticle(ad);
-      nodeBefore.replaceChild(bufferArticle, currentArticle);
-
-      currentArticle = bufferArticle;
-
-      setPopupCloseButtonEvents();
+      replacePopupAdArticle(ad);
     }
   };
 
