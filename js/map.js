@@ -1,5 +1,7 @@
 'use strict';
 
+
+
 var OFFER_TITLES = [
   'Большая уютная квартира',
   'Маленькая неуютная квартира',
@@ -35,17 +37,21 @@ var OFFER_FEATURES = [
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 
+var currentArticle = false;
+
+window.map = (function () {
+
 var map;
 var mapPins;
 var adNoticeForm;
 var mapMainPin;
 var ads;
 var activePin = false;
-var mapCardPoppupTemplate;
-var nodeBefore;
-var nodeBeforeInsert;
-var currentArticle = false;
-var popupCloseButton;
+//var mapCardPoppupTemplate;
+//var nodeBefore;
+//var nodeBeforeInsert;
+
+//var popupCloseButton;
 
 function generateRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -201,7 +207,7 @@ function createPinsFragment() {
 
   return fragment;
 }
-
+/*
 function getHousingByType(type) {
 
   var housing;
@@ -224,8 +230,8 @@ function getHousingByType(type) {
   }
 
   return housing;
-}
-
+}*/
+/*
 function deleteFeature(articleFeatures, feature) {
 
   var featureClass = '.feature--' + feature;
@@ -233,8 +239,8 @@ function deleteFeature(articleFeatures, feature) {
   var nodeFeature = articleFeatures.querySelector(featureClass);
 
   nodeFeature.parentNode.removeChild(nodeFeature);
-}
-
+}*/
+/*
 function getAdArticle(ad, template) {
 
   var article = template.cloneNode(true);
@@ -262,7 +268,7 @@ function getAdArticle(ad, template) {
 
   return article;
 }
-
+*/
 function setNoticeFormDisable(noticeForm, able) {
 
   var formDisableClass = 'notice__form--disabled';
@@ -327,10 +333,12 @@ function onMapPinClick(evt) {
   var ad = getAdByIndex(activePin.dataset.adIndex);
 
   if (currentArticle === false) {
-    openPopupAdArticle(ad);
+    window.card.openPopupAdArticle(ad);
   } else {
-    replacePopupAdArticle(ad);
+    window.card.replacePopupAdArticle(ad);
   }
+
+  //setPopupCloseButtonEvents();
 }
 
 function setActivePinState(state) {
@@ -341,26 +349,32 @@ function setActivePinState(state) {
     activePin.classList.remove('map__pin--active');
   }
 }
-
+/*
 function onClosePopupClick() {
 
   closePopupAdArticle();
-}
-
+  setActivePinState(false);
+  activePin = false;
+}*/
+/*
 function onClosePopupKeyDown(evt) {
 
   if (evt.keyCode === ENTER_KEYCODE) {
     closePopupAdArticle();
+    setActivePinState(false);
+    activePin = false;
   }
-}
-
+}*/
+/*
 function onPopupKeyDown(evt) {
 
   if (evt.keyCode === ESC_KEYCODE) {
     closePopupAdArticle();
+    setActivePinState(false);
+    activePin = false;
   }
-}
-
+}*/
+/*
 function setPopupCloseButtonEvents() {
 
   popupCloseButton = currentArticle.querySelector('.popup__close');
@@ -368,8 +382,8 @@ function setPopupCloseButtonEvents() {
   popupCloseButton.addEventListener('keydown', onClosePopupKeyDown);
 
   document.addEventListener('keydown', onPopupKeyDown);
-}
-
+}*/
+/*
 function openPopupAdArticle(ad) {
 
   currentArticle = getAdArticle(ad, mapCardPoppupTemplate);
@@ -377,8 +391,8 @@ function openPopupAdArticle(ad) {
   setPopupCloseButtonEvents();
 
   nodeBefore.insertBefore(currentArticle, nodeBeforeInsert);
-}
-
+}*/
+/*
 function closePopupAdArticle() {
 
   nodeBefore.removeChild(currentArticle);
@@ -387,8 +401,8 @@ function closePopupAdArticle() {
   activePin = false;
 
   document.removeEventListener('keydown', onPopupKeyDown);
-}
-
+}*/
+/*
 function replacePopupAdArticle(ad) {
 
   var bufferArticle = getAdArticle(ad, mapCardPoppupTemplate);
@@ -397,7 +411,7 @@ function replacePopupAdArticle(ad) {
   currentArticle = bufferArticle;
 
   setPopupCloseButtonEvents();
-}
+}*/
 
 function getAdByIndex(index) {
   return ads[index];
@@ -410,11 +424,11 @@ function init() {
   adNoticeForm = document.querySelector('form.notice__form');
   mapMainPin = document.querySelector('.map__pin--main');
 
-  mapCardPoppupTemplate = document.querySelector('template').content.querySelector('article.map__card');
+  //mapCardPoppupTemplate = document.querySelector('template').content.querySelector('article.map__card');
 
-  nodeBeforeInsert = document.querySelector('.map__filters-container');
+  /*nodeBeforeInsert = document.querySelector('.map__filters-container');
   nodeBefore = nodeBeforeInsert.parentNode;
-
+*/
   setNoticeFormDisable(adNoticeForm, true);
 
   mapMainPin.addEventListener('mouseup', onMainPinMouseUp);
@@ -436,3 +450,9 @@ function showAds() {
 }
 
 init();
+
+  /*return {
+    'currentArticle':currentArticle
+  };*/
+
+})();
