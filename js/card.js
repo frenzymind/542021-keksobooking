@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+window.card = (function (moduleMapLocal) {
 
   var mapCardPoppupTemplate = document.querySelector('template').content.querySelector('article.map__card');
   var nodeBeforeInsert = document.querySelector('.map__filters-container');
@@ -133,7 +133,7 @@
     document.removeEventListener('keydown', onPopupKeyDown);
   }
 
-  window.card = {
+  return {
 
     openPopupAdArticle : function (ad) {
 
@@ -146,22 +146,22 @@
         return currentArticle;
     },
 
-    closePopupAdArticle : function () {
+    closePopupAdArticle : closePopupAdArticle/*function () {
 
       closePopupAdArticle();
-    },
+    }*/,
 
-    replacePopupAdArticle : function (ad, currentArticle) {
+    replacePopupAdArticle : function (ad) {
 
       var bufferArticle = getAdArticle(ad);
-      nodeBefore.replaceChild(bufferArticle, currentArticle);
+      nodeBefore.replaceChild(bufferArticle, moduleMapLocal.currentArticle);
 
-      currentArticle = bufferArticle;
+      moduleMapLocal.currentArticle = bufferArticle;
 
-      setPopupCloseButtonEvents(currentArticle);
+      setPopupCloseButtonEvents(moduleMapLocal.currentArticle);
 
-      return currentArticle;
+      //return currentArticle;
     }
   };
 
-})();
+})(window.moduleMap);

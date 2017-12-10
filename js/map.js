@@ -35,7 +35,7 @@ var OFFER_FEATURES = [
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 
-(function () {
+window.moduleMap = (function () {
 
 var map;
 var mapPins;
@@ -43,7 +43,8 @@ var adNoticeForm;
 var mapMainPin;
 var ads;
 var activePin = false;
-var currentArticle = false;
+var moduleMap = {'currentArticle' : false};
+//var currentArticle = false;
 //var mapCardPoppupTemplate;
 //var nodeBefore;
 //var nodeBeforeInsert;
@@ -206,10 +207,10 @@ function onPinKeyDown(evt) {
 
     var ad = getAdByIndex(evt.target.dataset.adIndex);
 
-    if (currentArticle === false) {
-      currentArticle = openPopupAdArticle(ad);
+    if (moduleMap.currentArticle === false) {
+      moduleMap.currentArticle = openPopupAdArticle(ad);
     } else {
-      replacePopupAdArticle(ad, currentArticle);
+      replacePopupAdArticle(ad);
     }
   }
 }
@@ -232,10 +233,10 @@ function onMapPinClick(evt) {
 
   var ad = getAdByIndex(activePin.dataset.adIndex);
 
-  if (currentArticle === false) {
-    currentArticle = card.openPopupAdArticle(ad);
+  if (moduleMap.currentArticle === false) {
+    moduleMap.currentArticle = card.openPopupAdArticle(ad);
   } else {
-    currentArticle = card.replacePopupAdArticle(ad, currentArticle);
+    card.replacePopupAdArticle(ad);
   }
 
   //setPopupCloseButtonEvents();
@@ -349,10 +350,10 @@ function showAds() {
   mapPins.appendChild(fragmentPins);
 }
 
-init();
 
-  /*return {
-    'currentArticle':currentArticle
-  };*/
+
+  init();
+
+  return moduleMap;
 
 })();
