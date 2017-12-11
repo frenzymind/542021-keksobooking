@@ -42,7 +42,7 @@ var mapPins;
 var adNoticeForm;
 var mapMainPin;
 var ads;
-var activePin = false;
+var currentArticle = false;
 
 function generateAds(count) {
 
@@ -101,8 +101,6 @@ function onPinKeyDown(evt) {
 
     openAd(closerElement);
   }
-
-
 }
 
 function isItPin(domElement) {
@@ -131,22 +129,52 @@ function onMapPinClick(evt) {
     return;
   }
 
-  openAd(closerElement);
+  openPinAd(closerElement);
 }
 
-function openAd(closerElement) {
+  function openPinAd(pin) {
 
-  if (activePin !== false) { // если был активный пин, снимаем с него класс активности
-    window.pin.setActivePinState(activePin, false);
+    var ad = getAdByIndex(pin.dataset.adIndex);
+
+    currentArticle = window.card.showPopupAdArticle(ad);
+    window.pin.setPinOn(pin);
+    setCurrentArticleCloseButtonEvents(currentArticle);
   }
 
-  activePin = closerElement;
+  function onClosePopupClick() {
 
-  var ad = getAdByIndex(closerElement.dataset.adIndex);
+    closePopupAdArticle();
+    setActivePinState(false);
+    activePin = false;
+  }
 
-  window.card.showPopupAdArticle(ad);
-  window.pin.setActivePinState(activePin, true);
-}
+  function onClosePopupKeyDown(evt) {
+
+    if (evt.keyCode === ENTER_KEYCODE) {
+      closePopupAdArticle();
+      setActivePinState(false);
+      activePin = false;
+    }
+  }
+
+  function onPopupKeyDown(evt) {
+
+    if (evt.keyCode === ESC_KEYCODE) {
+      window.card.closePopupAdArticle();
+      window.pin.setPinOff();
+
+      document.removeEventListener('keydown', onPopupKeyDown);
+    }
+  }
+
+  function setCurrentArticleCloseButtonEvents(currentArticle) {
+
+    var popupCloseButton = currentArticle.querySelector('.popup__close');
+    //popupCloseButton.addEventListener('click', onClosePopupClick);
+    //popupCloseButton.addEventListener('keydown', onClosePopupKeyDown);
+
+    document.addEventListener('keydown', onPopupKeyDown);
+  }
 
 function getAdByIndex(index) {
   return ads[index];

@@ -2,6 +2,8 @@
 
 window.pin = (function() {
 
+  var activePin = false;
+
   function scaleX(x) {
 
     var mapPinXCorrection = -20;
@@ -48,13 +50,24 @@ window.pin = (function() {
 
         return fragment;
     },
-    setActivePinState: function (pin, state) {
+    setPinOn: function (pin) {
 
-      if (state === true) {
-        pin.classList.add('map__pin--active');
-      } else if (state === false) {
-        pin.classList.remove('map__pin--active');
+      if (activePin !== false) { // если был активный пин, снимаем с него класс активности
+        activePin.classList.remove('map__pin--active');
       }
+
+      activePin = pin;
+
+      //if (state === true) {
+        activePin.classList.add('map__pin--active');
+      /*} else if (state === false) {
+        activePin.classList.remove('map__pin--active');
+      }*/
+    },
+    setPinOff: function () {
+
+      activePin.classList.remove('map__pin--active');
+      activePin = false;
     }
   };
 
