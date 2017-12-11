@@ -1,11 +1,12 @@
 'use strict';
 
-window.card = (function (moduleMapLocal) {
+window.card = (function () {
 
   var mapCardPoppupTemplate = document.querySelector('template').content.querySelector('article.map__card');
   var nodeBeforeInsert = document.querySelector('.map__filters-container');
   var nodeBefore = nodeBeforeInsert.parentNode;
   var popupCloseButton;
+  var currentArticle = false;
 
   function deleteFeature(articleFeatures, feature) {
 
@@ -99,29 +100,8 @@ window.card = (function (moduleMapLocal) {
     popupCloseButton.addEventListener('click', onClosePopupClick);
     popupCloseButton.addEventListener('keydown', onClosePopupKeyDown);
 
-    //document.addEventListener('keydown', onPopupKeyDown);
+    document.addEventListener('keydown', onPopupKeyDown);
   }
-
-  /*function openPopupAdArticle(ad) {
-
-    var currentArticle = getAdArticle(ad);
-
-    setPopupCloseButtonEvents(currentArticle);
-
-    nodeBefore.insertBefore(currentArticle, nodeBeforeInsert);
-
-    return currentArticle;
-  }*/
-
-  /*function replacePopupAdArticle(ad, currentArticle) {
-
-    var bufferArticle = getAdArticle(ad);
-    nodeBefore.replaceChild(bufferArticle, currentArticle);
-
-    currentArticle = bufferArticle;
-
-    setPopupCloseButtonEvents(currentArticle);
-  }*/
 
   function closePopupAdArticle() {
 
@@ -135,33 +115,25 @@ window.card = (function (moduleMapLocal) {
 
   return {
 
-    openPopupAdArticle : function (ad) {
+    showPopupAdArticle : function (ad) {
 
-        var currentArticle = getAdArticle(ad);
+      if (currentArticle === false) {
 
-        setPopupCloseButtonEvents(currentArticle);
-
+        currentArticle = getAdArticle(ad);
         nodeBefore.insertBefore(currentArticle, nodeBeforeInsert);
 
-        return currentArticle;
+      } else {
+
+        var bufferArticle = getAdArticle(ad);
+        nodeBefore.replaceChild(bufferArticle, currentArticle);
+        currentArticle = bufferArticle;
+
+      }
+
+      setPopupCloseButtonEvents(currentArticle);
     },
 
-    closePopupAdArticle : closePopupAdArticle/*function () {
-
-      closePopupAdArticle();
-    }*/,
-
-    replacePopupAdArticle : function (ad) {
-
-      var bufferArticle = getAdArticle(ad);
-      nodeBefore.replaceChild(bufferArticle, moduleMapLocal.currentArticle);
-
-      moduleMapLocal.currentArticle = bufferArticle;
-
-      setPopupCloseButtonEvents(moduleMapLocal.currentArticle);
-
-      //return currentArticle;
-    }
+    closePopupAdArticle : closePopupAdArticle
   };
 
-})(window.moduleMap);
+})();

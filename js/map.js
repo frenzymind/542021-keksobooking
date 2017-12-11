@@ -43,7 +43,7 @@ var adNoticeForm;
 var mapMainPin;
 var ads;
 var activePin = false;
-var moduleMap = {'currentArticle' : false};
+//var moduleMap = {'currentArticle' : false};
 //var currentArticle = false;
 //var mapCardPoppupTemplate;
 //var nodeBefore;
@@ -58,7 +58,7 @@ function generateAds(count) {
 
   for (var i = 0; i < count; i++, currentNumber++) {
 
-    ads.push(data.createAd(currentNumber));
+    ads.push(window.data.createAd(currentNumber));
   }
 
   return ads;
@@ -108,68 +108,7 @@ function createPinsFragment() {
 
   return fragment;
 }
-/*
-function getHousingByType(type) {
 
-  var housing;
-
-  switch (type) {
-
-    case 'flat':
-      housing = 'Квартира';
-      break;
-
-    case 'bungalo':
-      housing = 'Бунгало';
-      break;
-
-    case 'house':
-      housing = 'Дом';
-      break;
-
-    default : housing = 'Неизвестный тип жилья';
-  }
-
-  return housing;
-}*/
-/*
-function deleteFeature(articleFeatures, feature) {
-
-  var featureClass = '.feature--' + feature;
-
-  var nodeFeature = articleFeatures.querySelector(featureClass);
-
-  nodeFeature.parentNode.removeChild(nodeFeature);
-}*/
-/*
-function getAdArticle(ad, template) {
-
-  var article = template.cloneNode(true);
-
-  article.querySelector('h3').textContent = ad.offer.title;
-  article.querySelector('p small').textContent = ad.offer.address;
-  article.querySelector('p.popup__price').innerHTML = ad.offer.price + ' &#x20bd; /ночь';
-  article.querySelector('h4').textContent = getHousingByType(ad.offer.type);
-  article.querySelector('p:nth-of-type(3)').textContent = ad.offer.rooms + ' для ' + ad.offer.guests + ' гостей';
-  article.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
-
-  var articleDomFeatures = article.querySelector('ul');
-
-  for (var i = 0; i < OFFER_FEATURES.length; i++) {
-
-    var featureIndex = ad.offer.features.indexOf(OFFER_FEATURES[i]);
-
-    if (featureIndex === -1) {
-      deleteFeature(articleDomFeatures, OFFER_FEATURES[i]);
-    }
-  }
-
-  article.querySelector('p:nth-of-type(5)').textContent = ad.offer.description;
-  article.querySelector('ul.popup__pictures li img').attributes.src.value = ad.author.avatar;
-
-  return article;
-}
-*/
 function setNoticeFormDisable(noticeForm, able) {
 
   var formDisableClass = 'notice__form--disabled';
@@ -224,22 +163,17 @@ function onMapPinClick(evt) {
     return;
   }
 
-  if (activePin !== false) { // если был активный пин, снимаем с него класс активности
+  /*if (activePin !== false) { // если был активный пин, снимаем с него класс активности
     setActivePinState(false);
-  }
+  }*/
 
-  activePin = closerElement;
-  setActivePinState(true);
+  //activePin = closerElement;
+  //setActivePinState(true);
 
-  var ad = getAdByIndex(activePin.dataset.adIndex);
+  var ad = getAdByIndex(closerElement.dataset.adIndex);
 
-  if (moduleMap.currentArticle === false) {
-    moduleMap.currentArticle = card.openPopupAdArticle(ad);
-  } else {
-    card.replacePopupAdArticle(ad);
-  }
+  window.card.showPopupAdArticle(ad);
 
-  //setPopupCloseButtonEvents();
 }
 
 function setActivePinState(state) {
@@ -350,10 +284,6 @@ function showAds() {
   mapPins.appendChild(fragmentPins);
 }
 
-
-
   init();
-
-  return moduleMap;
 
 })();
