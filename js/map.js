@@ -99,7 +99,7 @@ function onPinKeyDown(evt) {
       return;
     }
 
-    openAd(closerElement);
+    openPinAd(closerElement);
   }
 }
 
@@ -114,23 +114,23 @@ function isItPin(domElement) {
   return true;
 }
 
-function getClosestPin(domElement) {
+  function getClosestPin(domElement) {
 
-  var closest = domElement.closest('button.map__pin.map__pin--main') || domElement.closest('button.map__pin');
+    var closest = domElement.closest('button.map__pin.map__pin--main') || domElement.closest('button.map__pin');
 
-  return closest;
-}
-
-function onMapPinClick(evt) {
-
-  var closerElement = getClosestPin(evt.target);
-
-  if (!isItPin(closerElement)) {
-    return;
+    return closest;
   }
 
-  openPinAd(closerElement);
-}
+  function onMapPinClick(evt) {
+
+    var closerElement = getClosestPin(evt.target);
+
+    if (!isItPin(closerElement)) {
+      return;
+    }
+
+    openPinAd(closerElement);
+  }
 
   function openPinAd(pin) {
 
@@ -143,17 +143,18 @@ function onMapPinClick(evt) {
 
   function onClosePopupClick() {
 
-    closePopupAdArticle();
-    setActivePinState(false);
-    activePin = false;
+    window.card.closePopupAdArticle();
+    window.pin.setPinOff();
+    currentArticle = false;
   }
 
   function onClosePopupKeyDown(evt) {
 
     if (evt.keyCode === ENTER_KEYCODE) {
-      closePopupAdArticle();
-      setActivePinState(false);
-      activePin = false;
+
+      window.card.closePopupAdArticle();
+      window.pin.setPinOff();
+      currentArticle = false;
     }
   }
 
@@ -170,15 +171,15 @@ function onMapPinClick(evt) {
   function setCurrentArticleCloseButtonEvents(currentArticle) {
 
     var popupCloseButton = currentArticle.querySelector('.popup__close');
-    //popupCloseButton.addEventListener('click', onClosePopupClick);
-    //popupCloseButton.addEventListener('keydown', onClosePopupKeyDown);
+    popupCloseButton.addEventListener('click', onClosePopupClick);
+    popupCloseButton.addEventListener('keydown', onClosePopupKeyDown);
 
     document.addEventListener('keydown', onPopupKeyDown);
   }
 
-function getAdByIndex(index) {
-  return ads[index];
-}
+  function getAdByIndex(index) {
+    return ads[index];
+  }
 
   function init() {
 

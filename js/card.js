@@ -106,7 +106,7 @@ window.card = (function () {
   function closePopupAdArticle() {
 
     nodeBefore.removeChild(currentArticle);
-    //currentArticle = false;
+    currentArticle = false;
     /*setActivePinState(false);
     activePin = false;*/
 
