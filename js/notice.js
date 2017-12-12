@@ -43,15 +43,12 @@
 
   function onTypeChange() {
 
-    var selectedIndex = housingType.selectedIndex;
-
-    setMinPrice(HOUSING_TYPE_MIN_PRICE[housingType.options[selectedIndex].value]);
+    setMinPrice(HOUSING_TYPE_MIN_PRICE[housingType.value]);
   }
 
   function onRoomsChange() {
 
-    var selectedIndex = roomsCount.selectedIndex;
-    var roomValue = roomsCount.options[selectedIndex].value;
+    var roomValue = roomsCount.value;
 
     setGuestCountByValue(roomValue);
   }
@@ -87,27 +84,15 @@
 
       var selectElement = requiredFields[i];
 
-      if (!selectElement.checkValidity()) {
-
-        setFieldValid(selectElement, false);
-      } else {
-
-        setFieldValid(selectElement, true);
-      }
+      var isValid = selectElement.checkValidity();
+      setFieldValid(selectElement, isValid);
     }
   }
 
   function setFieldValid(filed, valid) {
 
-    if (valid) {
-
-      filed.style.borderColor = '';
-      filed.style.borderWidth = '';
-    } else {
-
-      filed.style.borderColor = BORDER_ERROR_COLOR;
-      filed.style.borderWidth = BORDER_ERROR_WIDTH;
-    }
+    filed.style.borderColor = valid ? '' : BORDER_ERROR_COLOR;
+    filed.style.borderWidth = valid ? '' : BORDER_ERROR_WIDTH;
   }
 
   function setGuestCountByValue(value) {
@@ -115,18 +100,20 @@
     var foundSomething = false;
     var zeroElement;
 
+    value = parseInt(value, 10);
+
     for (var i = 0; i < guestCount.children.length; i++) {
 
-      var selectValue = guestCount.children[i].value;
+      var selectValue = parseInt(guestCount.children[i].value, 10);
       var selectElement = guestCount.children[i];
 
-      if (selectValue === '0') {
+      if (selectValue === 0) {
         zeroElement = selectElement;
         zeroElement.classList.add('hidden');
         continue;
       }
 
-      if (+value <= +selectValue) {
+      if (value >= selectValue && value !== 100) {
 
         selectElement.classList.remove('hidden');
         foundSomething = true;
@@ -135,14 +122,13 @@
 
         selectElement.classList.add('hidden');
       }
-
     }
 
     if (foundSomething === false) {
       zeroElement.classList.remove('hidden');
     }
 
-    guestCount.selectedIndex = guestCount.querySelector('option:not(.hidden)').index; // первый не скрытый элемент
+    guestCount.selectedIndex = guestCount.querySelector('option:not(.hidden)').index; // первый не скрытый элемент из списка
   }
 
   function syncTimeInOut(timeField, index) {
