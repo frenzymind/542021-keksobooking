@@ -33,7 +33,6 @@ window.pin = (function() {
     img.draggable = false;
 
     button.appendChild(img);
-    //button.addEventListener('keydown', onPinKeyDown);
 
     return button;
   }
@@ -58,11 +57,8 @@ window.pin = (function() {
 
       activePin = pin;
 
-      //if (state === true) {
-        activePin.classList.add('map__pin--active');
-      /*} else if (state === false) {
-        activePin.classList.remove('map__pin--active');
-      }*/
+      activePin.classList.add('map__pin--active');
+
     },
     setPinOff: function () {
 

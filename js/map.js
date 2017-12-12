@@ -39,7 +39,6 @@ window.map = (function () {
 
 var mainMap;
 var mapPins;
-var adNoticeForm;
 var mapMainPin;
 var ads;
 var popupCloseButton;
@@ -57,24 +56,6 @@ function generateAds(count) {
   return ads;
 }
 
-function setNoticeFormDisable(noticeForm, able) {
-
-  var formDisableClass = 'notice__form--disabled';
-
-  if (able === false) {
-    adNoticeForm.classList.remove(formDisableClass);
-  } else {
-    adNoticeForm.classList.add(formDisableClass);
-  }
-
-  var fields = noticeForm.querySelectorAll('fieldset');
-
-  for (var i = 0; i < fields.length; i++) {
-
-    fields[i].disabled = able;
-  }
-}
-
 function mapMainPinBegin() {
 
   mainMap.classList.remove('map--faded');
@@ -85,7 +66,7 @@ function mapMainPinBegin() {
 function onMainPinMouseUp() {
 
   mapMainPinBegin();
-  setNoticeFormDisable(adNoticeForm, false);
+  window.form.setNoticeFormDisable(false);
   showAds();
 }
 
@@ -187,10 +168,7 @@ function isItPin(domElement) {
 
     mainMap = document.querySelector('.map');
     mapPins = document.querySelector('.map__pins');
-    adNoticeForm = document.querySelector('form.notice__form');
     mapMainPin = document.querySelector('.map__pin--main');
-
-    setNoticeFormDisable(adNoticeForm, true);
 
     mapMainPin.addEventListener('mouseup', onMainPinMouseUp);
   }
