@@ -68,49 +68,12 @@ window.card = (function () {
 
     return article;
   }
-/*
-  function onClosePopupClick() {
-
-    closePopupAdArticle();
-    setActivePinState(false);
-    activePin = false;
-  }
-
-  function onClosePopupKeyDown(evt) {
-
-    if (evt.keyCode === ENTER_KEYCODE) {
-      closePopupAdArticle();
-      /*setActivePinState(false);
-      activePin = false;
-    }
-  }
-
-  function onPopupKeyDown(evt) {
-
-    if (evt.keyCode === ESC_KEYCODE) {
-      closePopupAdArticle();
-      /*setActivePinState(false);
-      activePin = false;
-    }
-  }
-
-  function setPopupCloseButtonEvents(currentArticle) {
-
-    popupCloseButton = currentArticle.querySelector('.popup__close');
-    popupCloseButton.addEventListener('click', onClosePopupClick);
-    popupCloseButton.addEventListener('keydown', onClosePopupKeyDown);
-
-    document.addEventListener('keydown', onPopupKeyDown);
-  }*/
 
   function closePopupAdArticle() {
 
     nodeBefore.removeChild(currentArticle);
     currentArticle = false;
-    /*setActivePinState(false);
-    activePin = false;*/
 
-    //document.removeEventListener('keydown', onPopupKeyDown);
   }
 
   return {
@@ -130,7 +93,6 @@ window.card = (function () {
       }
 
       return currentArticle;
-      //setPopupCloseButtonEvents(currentArticle);
     },
 
     closePopupAdArticle : closePopupAdArticle

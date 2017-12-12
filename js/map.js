@@ -42,7 +42,7 @@ var mapPins;
 var adNoticeForm;
 var mapMainPin;
 var ads;
-var currentArticle = false;
+var popupCloseButton;
 
 function generateAds(count) {
 
@@ -136,41 +136,43 @@ function isItPin(domElement) {
 
     var ad = getAdByIndex(pin.dataset.adIndex);
 
-    currentArticle = window.card.showPopupAdArticle(ad);
+    var article = window.card.showPopupAdArticle(ad);
     window.pin.setPinOn(pin);
-    setCurrentArticleCloseButtonEvents(currentArticle);
+    setCurrentArticleCloseButtonEvents(article);
+  }
+
+  function closePinAd() {
+
+    window.card.closePopupAdArticle();
+    window.pin.setPinOff();
+
+    document.removeEventListener('keydown', onPopupKeyDown);
   }
 
   function onClosePopupClick() {
 
-    window.card.closePopupAdArticle();
-    window.pin.setPinOff();
-    currentArticle = false;
+    closePinAd();
   }
 
   function onClosePopupKeyDown(evt) {
 
     if (evt.keyCode === ENTER_KEYCODE) {
 
-      window.card.closePopupAdArticle();
-      window.pin.setPinOff();
-      currentArticle = false;
+      closePinAd();
     }
   }
 
   function onPopupKeyDown(evt) {
 
     if (evt.keyCode === ESC_KEYCODE) {
-      window.card.closePopupAdArticle();
-      window.pin.setPinOff();
 
-      document.removeEventListener('keydown', onPopupKeyDown);
+      closePinAd();
     }
   }
 
-  function setCurrentArticleCloseButtonEvents(currentArticle) {
+  function setCurrentArticleCloseButtonEvents(article) {
 
-    var popupCloseButton = currentArticle.querySelector('.popup__close');
+    popupCloseButton = article.querySelector('.popup__close');
     popupCloseButton.addEventListener('click', onClosePopupClick);
     popupCloseButton.addEventListener('keydown', onClosePopupKeyDown);
 
