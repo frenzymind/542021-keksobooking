@@ -183,7 +183,7 @@ window.data = (function () {
     return avatarObj;
   }
 
-   return {
+  return {
 
     createAd: function (number) {
 

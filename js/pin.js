@@ -1,6 +1,6 @@
 'use strict';
 
-window.pin = (function() {
+window.pin = (function () {
 
   var activePin = false;
 
@@ -41,13 +41,13 @@ window.pin = (function() {
 
     createPinsFragment: function (ads) {
 
-        var fragment = document.createDocumentFragment();
+      var fragment = document.createDocumentFragment();
 
-        for (var i = 0; i < ads.length; i++) {
-          fragment.appendChild(createDomPinElement(ads[i], i));
-        }
+      for (var i = 0; i < ads.length; i++) {
+        fragment.appendChild(createDomPinElement(ads[i], i));
+      }
 
-        return fragment;
+      return fragment;
     },
     setPinOn: function (pin) {
 
