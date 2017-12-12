@@ -2,72 +2,9 @@
 
 window.card = (function () {
 
-  var mapCardPoppupTemplate = document.querySelector('template').content.querySelector('article.map__card');
   var nodeBeforeInsert = document.querySelector('.map__filters-container');
   var nodeBefore = nodeBeforeInsert.parentNode;
-  var popupCloseButton;
   var currentArticle = false;
-
-  function deleteFeature(articleFeatures, feature) {
-
-    var featureClass = '.feature--' + feature;
-
-    var nodeFeature = articleFeatures.querySelector(featureClass);
-
-    nodeFeature.parentNode.removeChild(nodeFeature);
-  }
-
-  function getHousingByType(type) {
-
-    var housing;
-
-    switch (type) {
-
-      case 'flat':
-        housing = 'Квартира';
-        break;
-
-      case 'bungalo':
-        housing = 'Бунгало';
-        break;
-
-      case 'house':
-        housing = 'Дом';
-        break;
-
-      default : housing = 'Неизвестный тип жилья';
-    }
-
-    return housing;
-  }
-
-  function getAdArticle(ad) {
-
-    var article = mapCardPoppupTemplate.cloneNode(true);
-
-    article.querySelector('h3').textContent = ad.offer.title;
-    article.querySelector('p small').textContent = ad.offer.address;
-    article.querySelector('p.popup__price').innerHTML = ad.offer.price + ' &#x20bd; /ночь';
-    article.querySelector('h4').textContent = getHousingByType(ad.offer.type);
-    article.querySelector('p:nth-of-type(3)').textContent = ad.offer.rooms + ' для ' + ad.offer.guests + ' гостей';
-    article.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
-
-    var articleDomFeatures = article.querySelector('ul');
-
-    for (var i = 0; i < OFFER_FEATURES.length; i++) {
-
-      var featureIndex = ad.offer.features.indexOf(OFFER_FEATURES[i]);
-
-      if (featureIndex === -1) {
-        deleteFeature(articleDomFeatures, OFFER_FEATURES[i]);
-      }
-    }
-
-    article.querySelector('p:nth-of-type(5)').textContent = ad.offer.description;
-    article.querySelector('ul.popup__pictures li img').attributes.src.value = ad.author.avatar;
-
-    return article;
-  }
 
   function closePopupAdArticle() {
 
@@ -78,24 +15,23 @@ window.card = (function () {
 
   return {
 
-    showPopupAdArticle : function (ad) {
+    showPopupAdArticle: function (newArticle) {
 
       if (currentArticle === false) {
 
-        currentArticle = getAdArticle(ad);
+        currentArticle = newArticle;
         nodeBefore.insertBefore(currentArticle, nodeBeforeInsert);
 
       } else {
 
-        var bufferArticle = getAdArticle(ad);
+        var bufferArticle = newArticle;
         nodeBefore.replaceChild(bufferArticle, currentArticle);
         currentArticle = bufferArticle;
       }
 
-      return currentArticle;
     },
 
-    closePopupAdArticle : closePopupAdArticle
+    closePopupAdArticle: closePopupAdArticle
   };
 
 })();

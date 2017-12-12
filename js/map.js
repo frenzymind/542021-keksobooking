@@ -1,99 +1,67 @@
 'use strict';
 
-var OFFER_TITLES = [
-    'Большая уютная квартира',
-    'Маленькая неуютная квартира',
-    'Огромный прекрасный дворец',
-    'Маленький ужасный дворец',
-    'Красивый гостевой домик',
-    'Некрасивый негостеприимный домик',
-    'Уютное бунгало далеко от моря',
-    'Неуютное бунгало по колено в воде'
-];
-
-var OFFER_TYPES = [
-    'flat',
-    'house',
-    'bungalo'
-];
-
-var OFFER_CHECKS = [
-    '12:00',
-    '13:00',
-    '14:00'
-];
-
-var OFFER_FEATURES = [
-    'wifi',
-    'dishwasher',
-    'parking',
-    'washer',
-    'elevator',
-    'conditioner'
-];
-
-var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
-
 window.map = (function () {
 
-var mainMap;
-var mapPins;
-var mapMainPin;
-var ads;
-var popupCloseButton;
+  var ESC_KEYCODE = 27;
+  var ENTER_KEYCODE = 13;
 
-function generateAds(count) {
+  var mainMap;
+  var mapPins;
+  var mapMainPin;
+  var ads;
+  var popupCloseButton;
 
-  ads = [];
-  var currentNumber = 0;
+  function generateAds(count) {
 
-  for (var i = 0; i < count; i++, currentNumber++) {
+    ads = [];
+    var currentNumber = 0;
 
-    ads.push(window.data.createAd(currentNumber));
-  }
+    for (var i = 0; i < count; i++, currentNumber++) {
 
-  return ads;
-}
-
-function mapMainPinBegin() {
-
-  mainMap.classList.remove('map--faded');
-  document.addEventListener('click', onMapPinClick);
-  document.addEventListener('keydown', onPinKeyDown);
-}
-
-function onMainPinMouseUp() {
-
-  mapMainPinBegin();
-  window.form.setNoticeFormDisable(false);
-  showAds();
-}
-
-function onPinKeyDown(evt) {
-
-  if (evt.keyCode === ENTER_KEYCODE) {
-
-    var closerElement = getClosestPin(evt.target);
-
-    if (!isItPin(closerElement)) {
-      return;
+      ads.push(window.data.createAd(currentNumber));
     }
 
-    openPinAd(closerElement);
-  }
-}
-
-function isItPin(domElement) {
-
-  var pinMainClass = 'map__pin--main';
-
-  if (domElement === null || domElement.classList.contains(pinMainClass) === true) { // если это не пин или это главный пин, то не реагируем
-    return false;
+    return ads;
   }
 
-  return true;
-}
+  function mapMainPinBegin() {
+
+    mainMap.classList.remove('map--faded');
+    document.addEventListener('click', onMapPinClick);
+    document.addEventListener('keydown', onPinKeyDown);
+  }
+
+  function onMainPinMouseUp() {
+
+    mapMainPinBegin();
+    window.form.setNoticeFormDisable(false);
+    showAds();
+  }
+
+  function onPinKeyDown(evt) {
+
+    if (evt.keyCode === ENTER_KEYCODE) {
+
+      var closerElement = getClosestPin(evt.target);
+
+      if (!isItPin(closerElement)) {
+        return;
+      }
+
+      openPinAd(closerElement);
+    }
+  }
+
+  function isItPin(domElement) {
+
+    var pinMainClass = 'map__pin--main';
+
+    if (domElement === null || domElement.classList.contains(pinMainClass) === true) { // если это не пин или это главный пин, то не реагируем
+      return false;
+    }
+
+    return true;
+  }
 
   function getClosestPin(domElement) {
 
@@ -117,7 +85,9 @@ function isItPin(domElement) {
 
     var ad = getAdByIndex(pin.dataset.adIndex);
 
-    var article = window.card.showPopupAdArticle(ad);
+    var article = window.data.getAdArticle(ad);
+
+    window.card.showPopupAdArticle(article);
     window.pin.setPinOn(pin);
     setCurrentArticleCloseButtonEvents(article);
   }
