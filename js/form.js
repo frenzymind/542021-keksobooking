@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+window.form = (function () {
 
   var HOUSING_TYPE_MIN_PRICE = {
     'flat': 1000,
@@ -140,4 +140,26 @@
 
     priceFiled.min = price;
   }
+
+  return {
+
+    setNoticeFormDisable: function (able) {
+
+      var formDisableClass = 'notice__form--disabled';
+
+      if (able === false) {
+        noticeAdForm.classList.remove(formDisableClass);
+      } else {
+        noticeAdForm.classList.add(formDisableClass);
+      }
+
+      var fields = noticeAdForm.querySelectorAll('fieldset');
+
+      for (var i = 0; i < fields.length; i++) {
+
+        fields[i].disabled = able;
+      }
+    }
+  };
+
 })();
