@@ -4,6 +4,7 @@ window.map = (function () {
 
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
+  var PIN_MAIN_CLASS = 'map__pin--main';
 
   var mainMap;
   var mapPins;
@@ -29,6 +30,47 @@ window.map = (function () {
     mainMap.classList.remove('map--faded');
     document.addEventListener('click', onMapPinClick);
     document.addEventListener('keydown', onPinKeyDown);
+    document.addEventListener('mousedown', onMainPinMousedown);
+  }
+
+  function onMainPinMousedown(evt) {
+
+    var mainPin = getClosestPin(evt.target);
+
+    if (!isItMainPin(mainPin)) {
+      return;
+    }
+
+    function onMouseMove(moveEvt) {
+
+      mapMainPin.style.left = moveEvt.pageX + 'px';
+      mapMainPin.style.top = moveEvt.pageY  + 'px';
+
+      var coord = getMainPinAddressCoord();
+      window.form.setAddress(coord.x, coord.y);
+    };
+
+    function onMouseUp(upEvt) {
+
+      upEvt.preventDefault();
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    var t = 0;
+  }
+
+  function getMainPinAddressCoord() {
+
+    var correctX = 32;
+    var correctY = 32;
+
+    return {
+      x: mapMainPin.offsetLeft + correctX,
+      y: mapMainPin.offsetTop + correctY
+    };
   }
 
   function onMainPinMouseUp() {
@@ -54,9 +96,16 @@ window.map = (function () {
 
   function isItPin(domElement) {
 
-    var pinMainClass = 'map__pin--main';
+    if (domElement === null || domElement.classList.contains(PIN_MAIN_CLASS) === true) { // если это не пин или это главный пин, то не реагируем
+      return false;
+    }
 
-    if (domElement === null || domElement.classList.contains(pinMainClass) === true) { // если это не пин или это главный пин, то не реагируем
+    return true;
+  }
+
+  function isItMainPin(domElement) {
+
+    if (domElement === null || domElement.classList.contains(PIN_MAIN_CLASS) === false) {
       return false;
     }
 

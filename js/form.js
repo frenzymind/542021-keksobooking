@@ -159,6 +159,10 @@ window.form = (function () {
 
         fields[i].disabled = able;
       }
+    },
+    setAddress: function (x, y) {
+
+      addressFiled.value = 'x: ' + x + ', y:' + y;
     }
   };
 
