@@ -60,14 +60,14 @@ window.map = (function () {
 
       var coord = getMainPinAddressCoord();
       window.form.setAddress(coord.x, coord.y);
-    };
+    }
 
     function onMouseUp(upEvt) {
 
       upEvt.preventDefault();
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-    };
+    }
 
     function getMainPinAddressCoord() {
 
