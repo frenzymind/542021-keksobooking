@@ -43,11 +43,12 @@ window.map = (function () {
 
     function onMouseMove(moveEvt) {
 
-      mapMainPin.style.left = moveEvt.pageX + 'px';
+      var buff = mapMainPin.style.left;
+      mapMainPin.style.left = moveEvt.pageX  + 'px';
       mapMainPin.style.top = moveEvt.pageY  + 'px';
 
       var coord = getMainPinAddressCoord();
-      window.form.setAddress(coord.x, coord.y);
+      window.form.setAddress(buff, moveEvt.pageX);
     };
 
     function onMouseUp(upEvt) {
@@ -59,13 +60,12 @@ window.map = (function () {
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
-    var t = 0;
   }
 
   function getMainPinAddressCoord() {
 
     var correctX = 32;
-    var correctY = 32;
+    var correctY = 85;
 
     return {
       x: mapMainPin.offsetLeft + correctX,
