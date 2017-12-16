@@ -2,13 +2,6 @@
 
 window.form = (function () {
 
-  var HOUSING_TYPE_MIN_PRICE = {
-    'flat': 1000,
-    'bungalo': 0,
-    'house': 5000,
-    'palace': 10000
-  };
-
   var BORDER_ERROR_COLOR = '#cc0000';
   var BORDER_ERROR_WIDTH = '1.5px';
 
@@ -33,24 +26,25 @@ window.form = (function () {
 
   function onTimeInChange() {
 
-    syncTimeInOut(timeOut, timeIn.selectedIndex);
+    window.synchronize_fields.synchronizeFields(timeIn, timeOut, window.data.OFFER_CHECKS, window.data.OFFER_CHECKS, syncTimeInOut);
   }
 
   function onTimeOutChange() {
 
-    syncTimeInOut(timeIn, timeOut.selectedIndex);
+    window.synchronize_fields.synchronizeFields(timeOut, timeIn, window.data.OFFER_CHECKS, window.data.OFFER_CHECKS, syncTimeInOut);
   }
 
   function onTypeChange() {
 
-    setMinPrice(HOUSING_TYPE_MIN_PRICE[housingType.value]);
+    window.synchronize_fields.synchronizeFields(housingType, priceFiled, window.data.OFFER_TYPES, window.data.MIN_PRICE, setMinPrice);
   }
 
   function onRoomsChange() {
 
-    var roomValue = roomsCount.value;
+    var rooms = ['1','2','3','100'];
+    var guests = ['1','2','3','0'];
 
-    setGuestCountByValue(roomValue);
+    window.synchronize_fields.synchronizeFields(roomsCount, guestCount, rooms, guests, setGuestCountByValue);
   }
 
   function onSubmitButtonClick() {
@@ -95,17 +89,17 @@ window.form = (function () {
     filed.style.borderWidth = valid ? '' : BORDER_ERROR_WIDTH;
   }
 
-  function setGuestCountByValue(value) {
+  function setGuestCountByValue(filed, value) {
 
     var foundSomething = false;
     var zeroElement;
 
     value = parseInt(value, 10);
 
-    for (var i = 0; i < guestCount.children.length; i++) {
+    for (var i = 0; i < filed.children.length; i++) {
 
-      var selectValue = parseInt(guestCount.children[i].value, 10);
-      var selectElement = guestCount.children[i];
+      var selectValue = parseInt(filed.children[i].value, 10);
+      var selectElement = filed.children[i];
 
       if (selectValue === 0) {
         zeroElement = selectElement;
@@ -128,17 +122,24 @@ window.form = (function () {
       zeroElement.classList.remove('hidden');
     }
 
-    guestCount.selectedIndex = guestCount.querySelector('option:not(.hidden)').index; // первый не скрытый элемент из списка
+    filed.selectedIndex = filed.querySelector('option:not(.hidden)').index; // первый не скрытый элемент из списка
   }
 
-  function syncTimeInOut(timeField, index) {
+  function syncTimeInOut(timeField, value) {
 
-    timeField.selectedIndex = index;
+    timeField.value = value;
+    /*for (var i = 0; i < timeField.children.length; i++) {
+
+      if (timeField.children[i].value === value) {
+        timeField.selectedIndex = i;
+        break;
+      }
+    }*/
   }
 
-  function setMinPrice(price) {
+  function setMinPrice(field ,price) {
 
-    priceFiled.min = price;
+    field.min = price;
   }
 
   return {

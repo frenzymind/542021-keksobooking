@@ -16,7 +16,15 @@ window.data = (function () {
   var OFFER_TYPES = [
     'flat',
     'house',
-    'bungalo'
+    'bungalo',
+    'palace'
+  ];
+
+  var MIN_PRICE = [
+    1000,
+    5000,
+    0,
+    10000
   ];
 
   var OFFER_CHECKS = [
@@ -195,7 +203,10 @@ window.data = (function () {
 
       return ad;
     },
-    getAdArticle: getAdArticle
+    getAdArticle: getAdArticle,
+    OFFER_CHECKS: OFFER_CHECKS,
+    OFFER_TYPES: OFFER_TYPES,
+    MIN_PRICE: MIN_PRICE
   };
 
 })();

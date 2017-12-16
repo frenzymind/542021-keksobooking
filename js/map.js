@@ -146,14 +146,14 @@ window.map = (function () {
 
     var article = window.data.getAdArticle(ad);
 
-    window.card.showPopupAdArticle(article);
+    window.show_card.showPopupAdArticle(article);
     window.pin.setPinOn(pin);
     setCurrentArticleCloseButtonEvents(article);
   }
 
   function closePinAd() {
 
-    window.card.closePopupAdArticle();
+    window.show_card.closePopupAdArticle();
     window.pin.setPinOff();
 
     document.removeEventListener('keydown', onPopupKeyDown);

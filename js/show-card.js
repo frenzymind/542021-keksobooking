@@ -1,6 +1,6 @@
 'use strict';
 
-window.card = (function () {
+window.show_card = (function () {
 
   var nodeBeforeInsert = document.querySelector('.map__filters-container');
   var nodeBefore = nodeBeforeInsert.parentNode;
