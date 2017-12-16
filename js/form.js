@@ -128,13 +128,6 @@ window.form = (function () {
   function syncTimeInOut(timeField, value) {
 
     timeField.value = value;
-    /*for (var i = 0; i < timeField.children.length; i++) {
-
-      if (timeField.children[i].value === value) {
-        timeField.selectedIndex = i;
-        break;
-      }
-    }*/
   }
 
   function setMinPrice(field ,price) {
