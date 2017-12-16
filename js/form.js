@@ -41,8 +41,8 @@ window.form = (function () {
 
   function onRoomsChange() {
 
-    var rooms = ['1','2','3','100'];
-    var guests = ['1','2','3','0'];
+    var rooms = ['1', '2', '3', '100'];
+    var guests = ['1', '2', '3', '0'];
 
     window.synchronize_fields.synchronizeFields(roomsCount, guestCount, rooms, guests, setGuestCountByValue);
   }
@@ -130,7 +130,7 @@ window.form = (function () {
     timeField.value = value;
   }
 
-  function setMinPrice(field ,price) {
+  function setMinPrice(field, price) {
 
     field.min = price;
   }
