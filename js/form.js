@@ -26,17 +26,17 @@ window.form = (function () {
 
   function onTimeInChange() {
 
-    window.synchronize_fields.synchronizeFields(timeIn, timeOut, window.data.OFFER_CHECKS, window.data.OFFER_CHECKS, syncTimeInOut);
+    window.synchronizeFields.synchronizeFields(timeIn, timeOut, window.data.OFFER_CHECKS, window.data.OFFER_CHECKS, syncTimeInOut);
   }
 
   function onTimeOutChange() {
 
-    window.synchronize_fields.synchronizeFields(timeOut, timeIn, window.data.OFFER_CHECKS, window.data.OFFER_CHECKS, syncTimeInOut);
+    window.synchronizeFields.synchronizeFields(timeOut, timeIn, window.data.OFFER_CHECKS, window.data.OFFER_CHECKS, syncTimeInOut);
   }
 
   function onTypeChange() {
 
-    window.synchronize_fields.synchronizeFields(housingType, priceFiled, window.data.OFFER_TYPES, window.data.MIN_PRICE, setMinPrice);
+    window.synchronizeFields.synchronizeFields(housingType, priceFiled, window.data.OFFER_TYPES, window.data.MIN_PRICE, setMinPrice);
   }
 
   function onRoomsChange() {
@@ -44,7 +44,7 @@ window.form = (function () {
     var rooms = ['1', '2', '3', '100'];
     var guests = ['1', '2', '3', '0'];
 
-    window.synchronize_fields.synchronizeFields(roomsCount, guestCount, rooms, guests, setGuestCountByValue);
+    window.synchronizeFields.synchronizeFields(roomsCount, guestCount, rooms, guests, setGuestCountByValue);
   }
 
   function onSubmitButtonClick() {

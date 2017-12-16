@@ -1,6 +1,6 @@
 'use strict';
 
-window.synchronize_fields = (function () {
+window.synchronizeFields = (function () {
 
   return {
 
