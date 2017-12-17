@@ -15,6 +15,7 @@ window.form = (function () {
   var roomsCount = noticeAdForm.querySelector('fieldset select#room_number');
   var guestCount = noticeAdForm.querySelector('fieldset select#capacity');
   var buttonSubmit = noticeAdForm.querySelector('fieldset button.form__submit');
+  var discription = noticeAdForm.querySelector('#description');
 
   var callbackSubmitForm;
 
@@ -59,7 +60,7 @@ window.form = (function () {
 
     if (typeof callbackSubmitForm === 'function') {
 
-      hasError === true ? callbackSubmitForm(hasError) : callbackSubmitForm(hasError, formData);
+      hasError ? callbackSubmitForm(hasError) : callbackSubmitForm(hasError, formData);
     }
   }
 
@@ -72,7 +73,7 @@ window.form = (function () {
 
     titleFiled.value = '';
     priceFiled.value = '';
-
+    description.value = '';
   }
 
   function initAddNoticeForm() {
