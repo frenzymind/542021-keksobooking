@@ -60,7 +60,11 @@ window.form = (function () {
 
     if (typeof callbackSubmitForm === 'function') {
 
-      hasError ? callbackSubmitForm(hasError) : callbackSubmitForm(hasError, formData);
+      if (hasError) {
+        callbackSubmitForm(hasError);
+      } else {
+        callbackSubmitForm(hasError, formData);
+      }
     }
   }
 
@@ -73,7 +77,7 @@ window.form = (function () {
 
     titleFiled.value = '';
     priceFiled.value = '';
-    description.value = '';
+    discription.value = '';
   }
 
   function initAddNoticeForm() {
