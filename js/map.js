@@ -14,20 +14,6 @@ window.map = (function () {
   var mapMainPin;
   var ads;
   var popupCloseButton;
-  var formSendButton;
-
-  function generateAds(count) {
-
-    ads = [];
-    var currentNumber = 0;
-
-    for (var i = 0; i < count; i++, currentNumber++) {
-
-      ads.push(window.data.createAd(currentNumber));
-    }
-
-    return ads;
-  }
 
   function mapMainPinBegin() {
 
@@ -233,6 +219,7 @@ window.map = (function () {
   function onSaveFormServer() {
 
     clearError();
+    window.form.clearForm();
   }
 
   function onSaveFormErrorServer(msg) {
@@ -272,7 +259,7 @@ window.map = (function () {
       return;
     }
 
-    window.backend.load(onLoadAdsServer, onLoadAdsErrorServer);//generateAds(adsCount);
+    window.backend.load(onLoadAdsServer, onLoadAdsErrorServer);
   }
 
   init();

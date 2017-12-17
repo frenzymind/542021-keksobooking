@@ -68,6 +68,13 @@ window.form = (function () {
     callbackSubmitForm = func;
   }
 
+  function clearForm() {
+
+    titleFiled.value = '';
+    priceFiled.value = '';
+
+  }
+
   function initAddNoticeForm() {
 
     noticeAdForm.action = 'https://js.dump.academy/keksobooking';
@@ -181,7 +188,8 @@ window.form = (function () {
 
       addressFiled.value = 'x: ' + x + ', y:' + y;
     },
-    setCallbackSubmitFunction: setCallbackSubmitFunction
+    setCallbackSubmitFunction: setCallbackSubmitFunction,
+    clearForm: clearForm
   };
 
 })();
