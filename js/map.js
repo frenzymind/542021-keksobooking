@@ -7,6 +7,7 @@ window.map = (function () {
   var PIN_MAIN_CLASS = 'map__pin--main';
   var PIN_MAIN_TOP_BORDER = 100;
   var PIN_MAIN_BOT_BORDER = 500;
+  var ERROR_CLASS = 'error';
 
   var mainMap;
   var mapPins;
@@ -14,25 +15,14 @@ window.map = (function () {
   var ads;
   var popupCloseButton;
 
-  function generateAds(count) {
-
-    ads = [];
-    var currentNumber = 0;
-
-    for (var i = 0; i < count; i++, currentNumber++) {
-
-      ads.push(window.data.createAd(currentNumber));
-    }
-
-    return ads;
-  }
-
   function mapMainPinBegin() {
 
     mainMap.classList.remove('map--faded');
     document.addEventListener('click', onMapPinClick);
     document.addEventListener('keydown', onPinKeyDown);
     document.addEventListener('mousedown', onMainPinMousedown);
+
+    window.form.setCallbackSubmitFunction(formSubmitPressed);
   }
 
   function onMainPinMousedown(evt) {
@@ -202,19 +192,74 @@ window.map = (function () {
     mapMainPin.addEventListener('mouseup', onMainPinMouseUp);
   }
 
+  function onLoadAdsServer(pins) {
+
+    clearError();
+
+    ads = pins;
+
+    var fragmentPins = window.pin.createPinsFragment(ads);
+
+    mapPins.appendChild(fragmentPins);
+  }
+
+  function onLoadAdsErrorServer(msg) {
+
+    showErrorMessage(msg);
+  }
+
+  function formSubmitPressed(hasError, formData) {
+
+    if (hasError === false) {
+
+      window.backend.save(formData, onSaveFormServer, onSaveFormErrorServer);
+    }
+  }
+
+  function onSaveFormServer() {
+
+    clearError();
+    window.form.clearForm();
+  }
+
+  function onSaveFormErrorServer(msg) {
+
+    showErrorMessage(msg);
+  }
+
+  function showErrorMessage(errorMessage) {
+
+    clearError();
+
+    var node = document.createElement('div');
+    node.classList.add(ERROR_CLASS);
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  }
+
+  function clearError() {
+
+    var errorDiv = document.body.querySelector('div:nth-of-type(1)');
+
+    if (errorDiv.classList.contains(ERROR_CLASS)) {
+      document.body.removeChild(errorDiv);
+    }
+
+  }
+
   function showAds() {
 
     if (typeof ads !== 'undefined') {
       return;
     }
 
-    var adsCount = 8;
-
-    ads = generateAds(adsCount);
-
-    var fragmentPins = window.pin.createPinsFragment(ads);
-
-    mapPins.appendChild(fragmentPins);
+    window.backend.load(onLoadAdsServer, onLoadAdsErrorServer);
   }
 
   init();
