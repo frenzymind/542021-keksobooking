@@ -16,6 +16,8 @@ window.form = (function () {
   var guestCount = noticeAdForm.querySelector('fieldset select#capacity');
   var buttonSubmit = noticeAdForm.querySelector('fieldset button.form__submit');
 
+  var callbackSubmitForm;
+
   initAddNoticeForm();
 
   timeIn.addEventListener('change', onTimeInChange);
@@ -47,9 +49,23 @@ window.form = (function () {
     window.synchronizeFields.synchronizeFields(roomsCount, guestCount, rooms, guests, setGuestCountByValue);
   }
 
-  function onSubmitButtonClick() {
+  function onSubmitButtonClick(evt) {
 
-    checkFileds();
+    evt.preventDefault();
+
+    var formData = new FormData(noticeAdForm);
+
+    var hasError = checkFileds();
+
+    if (typeof callbackSubmitForm === 'function') {
+
+      hasError === true ? callbackSubmitForm(hasError) : callbackSubmitForm(hasError, formData);
+    }
+  }
+
+  function setCallbackSubmitFunction(func) {
+
+    callbackSubmitForm = func;
   }
 
   function initAddNoticeForm() {
@@ -72,6 +88,7 @@ window.form = (function () {
 
   function checkFileds() {
 
+    var hasError = false;
     var requiredFields = noticeAdForm.querySelectorAll('input[required]');
 
     for (var i = 0; i < requiredFields.length; i++) {
@@ -80,7 +97,13 @@ window.form = (function () {
 
       var isValid = selectElement.checkValidity();
       setFieldValid(selectElement, isValid);
+
+      if (!isValid) {
+        hasError = true;
+      }
     }
+
+    return hasError;
   }
 
   function setFieldValid(filed, valid) {
@@ -157,7 +180,8 @@ window.form = (function () {
     setAddress: function (x, y) {
 
       addressFiled.value = 'x: ' + x + ', y:' + y;
-    }
+    },
+    setCallbackSubmitFunction: setCallbackSubmitFunction
   };
 
 })();
