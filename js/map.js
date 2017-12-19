@@ -15,6 +15,8 @@ window.map = (function () {
   var ads;
   var popupCloseButton;
 
+  var filterContainer;
+
   function mapMainPinBegin() {
 
     mainMap.classList.remove('map--faded');
@@ -188,6 +190,7 @@ window.map = (function () {
     mainMap = document.querySelector('.map');
     mapPins = document.querySelector('.map__pins');
     mapMainPin = document.querySelector('.map__pin--main');
+    filterContainer = document.querySelector('div.map__filters-container');
 
     mapMainPin.addEventListener('mouseup', onMainPinMouseUp);
   }
