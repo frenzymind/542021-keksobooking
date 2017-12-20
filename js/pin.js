@@ -63,8 +63,10 @@ window.pin = (function () {
     },
     setPinOff: function () {
 
-      activePin.classList.remove('map__pin--active');
-      activePin = false;
+      if (activePin !== false) {
+        activePin.classList.remove('map__pin--active');
+        activePin = false;
+      }
     }
   };
 

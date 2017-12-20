@@ -8,8 +8,10 @@ window.showCard = (function () {
 
   function closePopupAdArticle() {
 
-    nodeBefore.removeChild(currentArticle);
-    currentArticle = false;
+    if (currentArticle !== false) {
+      nodeBefore.removeChild(currentArticle);
+      currentArticle = false;
+    }
 
   }
 

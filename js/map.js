@@ -236,6 +236,8 @@ window.map = (function () {
 
   function showPins() {
 
+    closePinAd();
+
     clearPins();
 
     var fragmentPins = window.pin.createPinsFragment(ads, SHOW_PIN_COUNT);
