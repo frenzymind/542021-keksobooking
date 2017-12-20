@@ -15,7 +15,7 @@ window.map = (function () {
   var ads;
   var popupCloseButton;
 
-  var filterContainer;
+  //var filterContainer;
 
   function mapMainPinBegin() {
 
