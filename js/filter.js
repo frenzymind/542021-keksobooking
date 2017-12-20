@@ -4,7 +4,7 @@ window.filter = (function () {
 
   var HOUSING_TYPE_ID = 'housing-type';
   var HOUSING_PRICE_ID = 'housing-price';
-  var HOUSING_ROOM_ID = 'housing-rooms'
+  var HOUSING_ROOM_ID = 'housing-rooms';
   var HOUSING_GUEST_ID = 'housing-guests';
 
   var FEATURES_WIFI_ID = 'filter-wifi';
@@ -26,7 +26,6 @@ window.filter = (function () {
   var housePriceValue = NO_FILTER_VALUE;
   var houseRoomValue = NO_FILTER_VALUE;
   var houseGuestValue = NO_FILTER_VALUE;
-  var houseFeaturesValue = NO_FILTER_VALUE;
 
   var featuresWifi = 0;
   var featuresDishWasher = 0;
@@ -86,7 +85,7 @@ window.filter = (function () {
     return weight;
   }
 
-  function getWeight (left, right) {
+  function getWeight(left, right) {
 
     var theRightWeight = 0;
     var theLeftWeight = 0;
