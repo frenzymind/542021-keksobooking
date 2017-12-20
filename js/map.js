@@ -29,7 +29,7 @@ window.map = (function () {
 
   function onFilterFormChange(evt) {
 
-    filtredAdsArray = window.filter.getFiltredArray(ads, evt.target);
+    filtredAdsArray = window.filter.getFiltredArray(filtredAdsArray, evt.target);
 
     debugger;
 
@@ -210,6 +210,7 @@ window.map = (function () {
     clearError();
 
     ads = pins;
+    filtredAdsArray = ads;
 
     var fragmentPins = window.pin.createPinsFragment(ads);
 

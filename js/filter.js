@@ -21,27 +21,46 @@ window.filter = (function () {
   var houseGuestValue;
   var houseFeaturesValue;
 
-  var filtredArray;
+  //var filtredArray;
 
   function filterHouseType(ad) {
     return ad.offer.type === houseTypeValue;
+  }
+
+  function filterHousePrice(ad) {
+
+    switch (housePriceValue) {
+      case 'middle': return (ad.offer.price >= MIDDLE_MIN_PRICE && ad.offer.price <= MIDDLE_MAX_PRICE);
+      case 'low': return ad.offer.price <= LOW_PRICE;
+      case 'high': return ad.offer.price >= HIGH_PRICE;
+      default: return true;
+    }
+
   }
 
   return {
 
     getFiltredArray: function (array, filterElement) {
 
-      filtredArray = array;
+      //filtredArray = array;
 
       if (filterElement.id === HOUSING_TYPE_ID) {
         houseTypeValue = filterElement.value;
 
         if (houseTypeValue !== NO_FILTER_VALUE) {
-          filtredArray = filtredArray.filter(filterHouseType);
+          array = array.filter(filterHouseType);
         }
       }
 
-      return filtredArray;
+      if (filterElement.id === HOUSING_PRICE_ID) {
+        housePriceValue = filterElement.value;
+
+        if (housePriceValue !== NO_FILTER_VALUE) {
+          array = array.filter(filterHousePrice);
+        }
+      }
+
+      return array;
 
     }
 
