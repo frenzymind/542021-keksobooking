@@ -14,8 +14,8 @@ window.map = (function () {
   var mapMainPin;
   var ads;
   var popupCloseButton;
-
-  //var filterContainer;
+  var filtredAdsArray;
+  var filterContainer;
 
   function mapMainPinBegin() {
 
@@ -25,6 +25,14 @@ window.map = (function () {
     document.addEventListener('mousedown', onMainPinMousedown);
 
     window.form.setCallbackSubmitFunction(formSubmitPressed);
+  }
+
+  function onFilterFormChange(evt) {
+
+    filtredAdsArray = window.filter.getFiltredArray(ads, evt.target);
+
+    debugger;
+
   }
 
   function onMainPinMousedown(evt) {
@@ -190,9 +198,11 @@ window.map = (function () {
     mainMap = document.querySelector('.map');
     mapPins = document.querySelector('.map__pins');
     mapMainPin = document.querySelector('.map__pin--main');
-    filterContainer = document.querySelector('div.map__filters-container');
+
+    filterContainer = document.querySelector('.map__filters');
 
     mapMainPin.addEventListener('mouseup', onMainPinMouseUp);
+    filterContainer.addEventListener('change', onFilterFormChange);
   }
 
   function onLoadAdsServer(pins) {
