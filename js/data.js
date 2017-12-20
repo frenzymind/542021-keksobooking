@@ -158,7 +158,7 @@ window.data = (function () {
     offer.checkin = getRandomArrayElement(OFFER_CHECKS);
     offer.checkout = getRandomArrayElement(OFFER_CHECKS);
     offer.features = getRandomUniqueArray(OFFER_FEATURES, featuresCount);
-    offer.description = '123';
+    offer.description = '';
     offer.photos = [];
 
     return offer;

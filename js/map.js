@@ -8,14 +8,17 @@ window.map = (function () {
   var PIN_MAIN_TOP_BORDER = 100;
   var PIN_MAIN_BOT_BORDER = 500;
   var ERROR_CLASS = 'error';
+  var SHOW_PIN_COUNT = 5;
+  var DEBOUNCE_INTERVAL = 500;
 
   var mainMap;
   var mapPins;
   var mapMainPin;
   var ads;
   var popupCloseButton;
-  var filtredAdsArray;
   var filterContainer;
+
+  var lastTimeout;
 
   function mapMainPinBegin() {
 
@@ -29,10 +32,27 @@ window.map = (function () {
 
   function onFilterFormChange(evt) {
 
-    filtredAdsArray = window.filter.getFiltredArray(filtredAdsArray, evt.target);
+    ads = window.filter.getFiltredArray(ads, evt.target);
 
-    debugger;
+    debounceFilterChange(showPins);
+  }
 
+  function debounceFilterChange(func) {
+
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+
+    lastTimeout = window.setTimeout(func, DEBOUNCE_INTERVAL);
+  }
+
+  function clearPins() {
+
+    var pins = mapPins.querySelectorAll('button.map__pin:not(.map__pin--main)');
+
+    for (var i = 0; i < pins.length; i++) {
+      mapPins.removeChild(pins[i]);
+    }
   }
 
   function onMainPinMousedown(evt) {
@@ -210,9 +230,15 @@ window.map = (function () {
     clearError();
 
     ads = pins;
-    filtredAdsArray = ads;
 
-    var fragmentPins = window.pin.createPinsFragment(ads);
+    showPins();
+  }
+
+  function showPins() {
+
+    clearPins();
+
+    var fragmentPins = window.pin.createPinsFragment(ads, SHOW_PIN_COUNT);
 
     mapPins.appendChild(fragmentPins);
   }
