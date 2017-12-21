@@ -4,6 +4,7 @@ window.form = (function () {
 
   var BORDER_ERROR_COLOR = '#cc0000';
   var BORDER_ERROR_WIDTH = '1.5px';
+  var DRAG_ENTER_BACKGROUND_COLOR = '#d6d6f5'
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   var noticeAdForm = document.querySelector('form.notice__form');
@@ -20,6 +21,8 @@ window.form = (function () {
   var avatarPreview = noticeAdForm.querySelector('div.notice__preview img');
   var avatarChooser = noticeAdForm.querySelector('#avatar');
   var avatarChooserLabel = noticeAdForm.querySelector('label.drop-zone');
+  var photoContainer = noticeAdForm.querySelector('.form__photo-container');
+  var photoChooser = noticeAdForm.querySelector('#images');
 
   var callbackSubmitForm;
 
@@ -35,6 +38,69 @@ window.form = (function () {
   avatarChooserLabel.addEventListener('dragover', onAvatarChooserLabelDragOver);
   avatarChooserLabel.addEventListener('dragenter', onAvatarChooserLabelDragEnter);
   avatarChooserLabel.addEventListener('dragleave', onAvatarChooserLabelDragLeave);
+  photoChooser.addEventListener('change', onPhotoChooserChanger);
+
+  function onPhotoChooserChanger() {
+
+    var photoFiles = photoChooser.files;
+    loadHousingPreview(photoFiles);
+  }
+
+  function loadHousingPreview(photoFiles) {
+
+    for (var i = 0; i < photoFiles.length; i++) {
+
+      var photoName = photoFiles[i].name.toLowerCase();
+
+      var matches = FILE_TYPES.some(function (it) {
+        return photoName.endsWith(it);
+      });
+
+      if (matches) {
+        createEventLoadForPhoto(photoFiles[i]);
+      }
+
+    }
+
+    //var photoFragment = document.createFragment();
+
+    /*photoFiles.forEach (function (photo, it) { // нет такого метода
+
+      var imgDom = document.createElement(HOUSING_PHOTO_INNER_HTML);
+      var photoName = photo.name.toLowerCase();
+
+      var matches = FILE_TYPES.some(function (it) {
+        return photoName.endsWith(it);
+      });
+
+      if (matches) {
+
+        var reader = new FileReader();
+
+        reader.addEventListener('load', function () {
+          imgDom.src = reader.result;
+          photoContainer.appendChild(imgDom);//photoFragment.appendChild(imgDom);
+        });
+
+        reader.readAsDataURL(photo);
+      }
+    });*/
+  }
+
+  function createEventLoadForPhoto(photo) {
+
+    var reader = new FileReader();
+
+    reader.addEventListener('load', function () {
+      var imgDom = document.createElement('IMG');
+      imgDom.width = '44';
+      imgDom.height = '40';
+      imgDom.src = reader.result;
+      photoContainer.appendChild(imgDom);
+    });
+
+    reader.readAsDataURL(photo);
+  }
 
   function onAvatarChooserLabelDrop(evt) {
 
@@ -53,7 +119,7 @@ window.form = (function () {
 
   function onAvatarChooserLabelDragEnter(evt) {
 
-    evt.target.style.backgroundColor = '#d6d6f5';
+    evt.target.style.backgroundColor = DRAG_ENTER_BACKGROUND_COLOR;
     evt.preventDefault();
   }
 
@@ -159,6 +225,7 @@ window.form = (function () {
     priceFiled.max = 1000000;
     priceFiled.placeholder = 1000;
 
+    photoChooser.multiple = "true";
   }
 
   function checkFileds() {
