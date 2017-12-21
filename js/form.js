@@ -4,6 +4,7 @@ window.form = (function () {
 
   var BORDER_ERROR_COLOR = '#cc0000';
   var BORDER_ERROR_WIDTH = '1.5px';
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   var noticeAdForm = document.querySelector('form.notice__form');
   var addressFiled = noticeAdForm.querySelector('fieldset input#address');
@@ -16,6 +17,8 @@ window.form = (function () {
   var guestCount = noticeAdForm.querySelector('fieldset select#capacity');
   var buttonSubmit = noticeAdForm.querySelector('fieldset button.form__submit');
   var discription = noticeAdForm.querySelector('#description');
+  var avatarPreview = noticeAdForm.querySelector('div.notice__preview img');
+  var avatarChooser = noticeAdForm.querySelector('#avatar');
 
   var callbackSubmitForm;
 
@@ -26,6 +29,27 @@ window.form = (function () {
   housingType.addEventListener('change', onTypeChange);
   roomsCount.addEventListener('change', onRoomsChange);
   buttonSubmit.addEventListener('click', onSubmitButtonClick);
+
+  function onAvatarChooserChanger() {
+
+    var avatarFile = avatarChooser.files[0];
+    var avatarName = avatarFile.name.toLowerCase();
+
+    var matches = FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+
+    if (mathces) {
+
+      var reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        avatarPreview.src = reader.result;
+      });
+
+      reader.readAsDataURL(avatarFile);
+    }
+  }
 
   function onTimeInChange() {
 
