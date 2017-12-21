@@ -117,8 +117,8 @@ window.form = (function () {
 
   function onChooserLabelDragLeave(evt) {
 
-     evt.target.style.backgroundColor = '';
-     evt.preventDefault();
+    evt.target.style.backgroundColor = '';
+    evt.preventDefault();
   }
 
   function onAvatarChooserChanger() {
