@@ -237,7 +237,8 @@ window.form = (function () {
     titleFiled.value = '';
     priceFiled.value = '';
     discription.value = '';
-    addressFiled.value = '';
+
+    setAddress(0,0);
 
     avatarPreview.src = 'img/avatars/default.png';
 
@@ -261,7 +262,7 @@ window.form = (function () {
 
     addressFiled.readOnly = true;
     addressFiled.required = true;
-    addressFiled.value = '123';
+    setAddress(0,0);
 
     titleFiled.required = true;
     titleFiled.minLength = 30;
@@ -347,6 +348,11 @@ window.form = (function () {
     field.min = price;
   }
 
+  function setAddress(x, y) {
+
+    addressFiled.value = 'x: ' + x + ', y:' + y;
+  }
+
   return {
 
     setNoticeFormDisable: function (able) {
@@ -366,10 +372,7 @@ window.form = (function () {
         fields[i].disabled = able;
       }
     },
-    setAddress: function (x, y) {
-
-      addressFiled.value = 'x: ' + x + ', y:' + y;
-    },
+    setAddress: setAddress,
     setCallbackSubmitFunction: setCallbackSubmitFunction,
     clearForm: clearForm
   };
