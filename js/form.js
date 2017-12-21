@@ -27,6 +27,8 @@ window.form = (function () {
 
   var callbackSubmitForm;
 
+  var draggedPhoto;
+
   initAddNoticeForm();
 
   timeIn.addEventListener('change', onTimeInChange);
@@ -46,6 +48,39 @@ window.form = (function () {
   photoChooserLabel.addEventListener('dragover', onChooserLabelDragOver);
   photoChooserLabel.addEventListener('dragenter', onChooserLabelDragEnter);
   photoChooserLabel.addEventListener('dragleave', onChooserLabelDragLeave);
+
+  function onPhotoDrag(evt) {
+
+    if (evt.target.tagName.toLowerCase() === 'img') {
+      draggedPhoto = evt.target;
+      evt.dataTransfer.setData('text/plain', evt.target.alt);
+    }
+  }
+
+  function onPhotoDragOver(evt) {
+    evt.preventDefault();
+    return false;
+  }
+
+  function onPhotoDrop(evt) {
+
+    var target = evt.currentTarget;
+
+    var draggedSibling = draggedPhoto.nextSibling;
+    var targetSibling = target.nextSibling;
+
+    if (targetSibling) {
+      photoContainer.insertBefore(draggedPhoto, targetSibling);
+    } else {
+      photoContainer.appendChild(draggedPhoto);
+    }
+
+    if (draggedSibling) {
+      photoContainer.insertBefore(target, draggedSibling);
+    } else {
+      photoContainer.appendChild(target);
+    }
+  }
 
   function onPhotoChooserChanger() {
 
@@ -75,7 +110,6 @@ window.form = (function () {
       if (matches) {
         createEventLoadForPhoto(photoFiles[i]);
       }
-
     }
   }
 
@@ -83,15 +117,20 @@ window.form = (function () {
 
     var reader = new FileReader();
 
+    var imgDom = document.createElement('IMG');
+    imgDom.width = '44';
+    imgDom.height = '40';
+
     reader.addEventListener('load', function () {
-      var imgDom = document.createElement('IMG');
-      imgDom.width = '44';
-      imgDom.height = '40';
       imgDom.src = reader.result;
       photoContainer.appendChild(imgDom);
     });
 
     reader.readAsDataURL(photo);
+
+    imgDom.addEventListener('dragstart', onPhotoDrag);
+    imgDom.addEventListener('dragover', onPhotoDragOver);
+    imgDom.addEventListener('drop', onPhotoDrop);
   }
 
   function onAvatarChooserLabelDrop(evt) {
