@@ -253,7 +253,6 @@ window.form = (function () {
     for (i = 0; i < features.length; i++) {
       features[i].checked = false;
     }
-
   }
 
   function initAddNoticeForm() {
