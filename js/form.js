@@ -20,9 +20,10 @@ window.form = (function () {
   var discription = noticeAdForm.querySelector('#description');
   var avatarPreview = noticeAdForm.querySelector('div.notice__preview img');
   var avatarChooser = noticeAdForm.querySelector('#avatar');
-  var avatarChooserLabel = noticeAdForm.querySelector('label.drop-zone');
+  var avatarChooserLabel = noticeAdForm.querySelector('div.notice__photo label.drop-zone');
   var photoContainer = noticeAdForm.querySelector('.form__photo-container');
   var photoChooser = noticeAdForm.querySelector('#images');
+  var photoChooserLabel = noticeAdForm.querySelector('div.form__photo-container label.drop-zone');
 
   var callbackSubmitForm;
 
@@ -33,16 +34,31 @@ window.form = (function () {
   housingType.addEventListener('change', onTypeChange);
   roomsCount.addEventListener('change', onRoomsChange);
   buttonSubmit.addEventListener('click', onSubmitButtonClick);
+
   avatarChooser.addEventListener('change', onAvatarChooserChanger);
   avatarChooserLabel.addEventListener('drop', onAvatarChooserLabelDrop);
-  avatarChooserLabel.addEventListener('dragover', onAvatarChooserLabelDragOver);
-  avatarChooserLabel.addEventListener('dragenter', onAvatarChooserLabelDragEnter);
-  avatarChooserLabel.addEventListener('dragleave', onAvatarChooserLabelDragLeave);
+  avatarChooserLabel.addEventListener('dragover', onChooserLabelDragOver);
+  avatarChooserLabel.addEventListener('dragenter', onChooserLabelDragEnter);
+  avatarChooserLabel.addEventListener('dragleave', onChooserLabelDragLeave);
+
   photoChooser.addEventListener('change', onPhotoChooserChanger);
+  photoChooserLabel.addEventListener('drop', onHousingChooserLabelDrop);
+  photoChooserLabel.addEventListener('dragover', onChooserLabelDragOver);
+  photoChooserLabel.addEventListener('dragenter', onChooserLabelDragEnter);
+  photoChooserLabel.addEventListener('dragleave', onChooserLabelDragLeave);
 
   function onPhotoChooserChanger() {
 
     var photoFiles = photoChooser.files;
+    loadHousingPreview(photoFiles);
+  }
+
+  function onHousingChooserLabelDrop(evt) {
+
+    evt.target.style.backgroundColor = '';
+    evt.preventDefault();
+
+    var photoFiles = evt.dataTransfer.files;
     loadHousingPreview(photoFiles);
   }
 
@@ -111,19 +127,19 @@ window.form = (function () {
     loadAvatarPreview(avatarFile);
   }
 
-  function onAvatarChooserLabelDragOver(evt) {
+  function onChooserLabelDragOver(evt) {
 
     evt.preventDefault();
     return false;
   }
 
-  function onAvatarChooserLabelDragEnter(evt) {
+  function onChooserLabelDragEnter(evt) {
 
     evt.target.style.backgroundColor = DRAG_ENTER_BACKGROUND_COLOR;
     evt.preventDefault();
   }
 
-  function onAvatarChooserLabelDragLeave(evt) {
+  function onChooserLabelDragLeave(evt) {
 
      evt.target.style.backgroundColor = '';
      evt.preventDefault();
@@ -206,6 +222,22 @@ window.form = (function () {
     titleFiled.value = '';
     priceFiled.value = '';
     discription.value = '';
+    addressFiled.value = '';
+
+    avatarPreview.src = 'img/avatars/default.png';
+
+    var housingPhotos = photoContainer.querySelectorAll('img');
+
+    for (var i = 0; i < housingPhotos.length; i++) {
+      photoContainer.removeChild(housingPhotos[i]);
+    }
+
+    var features = document.querySelectorAll('fieldset.form__element.features form__element--wide input');
+
+    for (i = 0; i < features.length; i++) {
+      features[i].checked = false;
+    }
+
   }
 
   function initAddNoticeForm() {
