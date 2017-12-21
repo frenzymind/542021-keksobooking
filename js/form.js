@@ -232,7 +232,7 @@ window.form = (function () {
       photoContainer.removeChild(housingPhotos[i]);
     }
 
-    var features = document.querySelectorAll('fieldset.form__element.features form__element--wide input');
+    var features = document.querySelectorAll('fieldset.form__element.features.form__element--wide input');
 
     for (i = 0; i < features.length; i++) {
       features[i].checked = false;
