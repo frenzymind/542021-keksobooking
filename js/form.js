@@ -32,7 +32,9 @@ window.form = (function () {
   buttonSubmit.addEventListener('click', onSubmitButtonClick);
   avatarChooser.addEventListener('change', onAvatarChooserChanger);
   avatarChooserLabel.addEventListener('drop', onAvatarChooserLabelDrop);
-  avatarChooserLabel.addEventListener('dragover', onAvatarChooserLabelDragover);
+  avatarChooserLabel.addEventListener('dragover', onAvatarChooserLabelDragOver);
+  avatarChooserLabel.addEventListener('dragenter', onAvatarChooserLabelDragEnter);
+  avatarChooserLabel.addEventListener('dragleave', onAvatarChooserLabelDragLeave);
 
   function onAvatarChooserLabelDrop(evt) {
 
@@ -43,10 +45,22 @@ window.form = (function () {
     loadAvatarPreview(avatarFile);
   }
 
-  function onAvatarChooserLabelDragover(evt) {
+  function onAvatarChooserLabelDragOver(evt) {
 
     evt.preventDefault();
     return false;
+  }
+
+  function onAvatarChooserLabelDragEnter(evt) {
+
+    evt.target.style.backgroundColor = '#d6d6f5';
+    evt.preventDefault();
+  }
+
+  function onAvatarChooserLabelDragLeave(evt) {
+
+     evt.target.style.backgroundColor = '';
+     evt.preventDefault();
   }
 
   function onAvatarChooserChanger() {
@@ -134,7 +148,7 @@ window.form = (function () {
 
     addressFiled.readOnly = true;
     addressFiled.required = true;
-    addressFiled.value = '123'; // иначе форма не верна, что-то в ней долждно быть. Хотя сама readonly
+    addressFiled.value = '123';
 
     titleFiled.required = true;
     titleFiled.minLength = 30;
@@ -144,6 +158,7 @@ window.form = (function () {
     priceFiled.min = 0;
     priceFiled.max = 1000000;
     priceFiled.placeholder = 1000;
+
   }
 
   function checkFileds() {
