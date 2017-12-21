@@ -19,6 +19,7 @@ window.form = (function () {
   var discription = noticeAdForm.querySelector('#description');
   var avatarPreview = noticeAdForm.querySelector('div.notice__preview img');
   var avatarChooser = noticeAdForm.querySelector('#avatar');
+  var avatarChooserLabel = noticeAdForm.querySelector('label.drop-zone');
 
   var callbackSubmitForm;
 
@@ -29,17 +30,40 @@ window.form = (function () {
   housingType.addEventListener('change', onTypeChange);
   roomsCount.addEventListener('change', onRoomsChange);
   buttonSubmit.addEventListener('click', onSubmitButtonClick);
+  avatarChooser.addEventListener('change', onAvatarChooserChanger);
+  avatarChooserLabel.addEventListener('drop', onAvatarChooserLabelDrop);
+  avatarChooserLabel.addEventListener('dragover', onAvatarChooserLabelDragover);
+
+  function onAvatarChooserLabelDrop(evt) {
+
+    evt.target.style.backgroundColor = '';
+    evt.preventDefault();
+
+    var avatarFile = evt.dataTransfer.files[0];
+    loadAvatarPreview(avatarFile);
+  }
+
+  function onAvatarChooserLabelDragover(evt) {
+
+    evt.preventDefault();
+    return false;
+  }
 
   function onAvatarChooserChanger() {
 
     var avatarFile = avatarChooser.files[0];
+    loadAvatarPreview(avatarFile);
+  }
+
+  function loadAvatarPreview(avatarFile) {
+
     var avatarName = avatarFile.name.toLowerCase();
 
     var matches = FILE_TYPES.some(function (it) {
-      return fileName.endsWith(it);
+      return avatarName.endsWith(it);
     });
 
-    if (mathces) {
+    if (matches) {
 
       var reader = new FileReader();
 
