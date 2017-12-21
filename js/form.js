@@ -238,7 +238,7 @@ window.form = (function () {
     priceFiled.value = '';
     discription.value = '';
 
-    setAddress(0,0);
+    setAddress(0, 0);
 
     avatarPreview.src = 'img/avatars/default.png';
 
@@ -261,7 +261,7 @@ window.form = (function () {
 
     addressFiled.readOnly = true;
     addressFiled.required = true;
-    setAddress(0,0);
+    setAddress(0, 0);
 
     titleFiled.required = true;
     titleFiled.minLength = 30;
