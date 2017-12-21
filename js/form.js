@@ -4,7 +4,7 @@ window.form = (function () {
 
   var BORDER_ERROR_COLOR = '#cc0000';
   var BORDER_ERROR_WIDTH = '1.5px';
-  var DRAG_ENTER_BACKGROUND_COLOR = '#d6d6f5'
+  var DRAG_ENTER_BACKGROUND_COLOR = '#d6d6f5';
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   var noticeAdForm = document.querySelector('form.notice__form');
@@ -77,30 +77,6 @@ window.form = (function () {
       }
 
     }
-
-    //var photoFragment = document.createFragment();
-
-    /*photoFiles.forEach (function (photo, it) { // нет такого метода
-
-      var imgDom = document.createElement(HOUSING_PHOTO_INNER_HTML);
-      var photoName = photo.name.toLowerCase();
-
-      var matches = FILE_TYPES.some(function (it) {
-        return photoName.endsWith(it);
-      });
-
-      if (matches) {
-
-        var reader = new FileReader();
-
-        reader.addEventListener('load', function () {
-          imgDom.src = reader.result;
-          photoContainer.appendChild(imgDom);//photoFragment.appendChild(imgDom);
-        });
-
-        reader.readAsDataURL(photo);
-      }
-    });*/
   }
 
   function createEventLoadForPhoto(photo) {
@@ -257,7 +233,7 @@ window.form = (function () {
     priceFiled.max = 1000000;
     priceFiled.placeholder = 1000;
 
-    photoChooser.multiple = "true";
+    photoChooser.multiple = true;
   }
 
   function checkFileds() {
