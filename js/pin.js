@@ -39,11 +39,12 @@ window.pin = (function () {
 
   return {
 
-    createPinsFragment: function (ads) {
+    createPinsFragment: function (ads, pinCount) {
 
+      var count = pinCount || ads.length;
       var fragment = document.createDocumentFragment();
 
-      for (var i = 0; i < ads.length; i++) {
+      for (var i = 0; i < count; i++) {
         fragment.appendChild(createDomPinElement(ads[i], i));
       }
 
@@ -62,8 +63,10 @@ window.pin = (function () {
     },
     setPinOff: function () {
 
-      activePin.classList.remove('map__pin--active');
-      activePin = false;
+      if (activePin !== false) {
+        activePin.classList.remove('map__pin--active');
+        activePin = false;
+      }
     }
   };
 

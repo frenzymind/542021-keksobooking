@@ -8,12 +8,17 @@ window.map = (function () {
   var PIN_MAIN_TOP_BORDER = 100;
   var PIN_MAIN_BOT_BORDER = 500;
   var ERROR_CLASS = 'error';
+  var SHOW_PIN_COUNT = 5;
+  var DEBOUNCE_INTERVAL = 500;
 
   var mainMap;
   var mapPins;
   var mapMainPin;
   var ads;
   var popupCloseButton;
+  var filterContainer;
+
+  var lastTimeout;
 
   function mapMainPinBegin() {
 
@@ -23,6 +28,31 @@ window.map = (function () {
     document.addEventListener('mousedown', onMainPinMousedown);
 
     window.form.setCallbackSubmitFunction(formSubmitPressed);
+  }
+
+  function onFilterFormChange(evt) {
+
+    ads = window.filter.getFiltredArray(ads, evt.target);
+
+    debounceFilterChange(showPins);
+  }
+
+  function debounceFilterChange(func) {
+
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+
+    lastTimeout = window.setTimeout(func, DEBOUNCE_INTERVAL);
+  }
+
+  function clearPins() {
+
+    var pins = mapPins.querySelectorAll('button.map__pin:not(.map__pin--main)');
+
+    for (var i = 0; i < pins.length; i++) {
+      mapPins.removeChild(pins[i]);
+    }
   }
 
   function onMainPinMousedown(evt) {
@@ -189,7 +219,10 @@ window.map = (function () {
     mapPins = document.querySelector('.map__pins');
     mapMainPin = document.querySelector('.map__pin--main');
 
+    filterContainer = document.querySelector('.map__filters');
+
     mapMainPin.addEventListener('mouseup', onMainPinMouseUp);
+    filterContainer.addEventListener('change', onFilterFormChange);
   }
 
   function onLoadAdsServer(pins) {
@@ -198,7 +231,16 @@ window.map = (function () {
 
     ads = pins;
 
-    var fragmentPins = window.pin.createPinsFragment(ads);
+    showPins();
+  }
+
+  function showPins() {
+
+    closePinAd();
+
+    clearPins();
+
+    var fragmentPins = window.pin.createPinsFragment(ads, SHOW_PIN_COUNT);
 
     mapPins.appendChild(fragmentPins);
   }
