@@ -4,6 +4,8 @@ window.form = (function () {
 
   var BORDER_ERROR_COLOR = '#cc0000';
   var BORDER_ERROR_WIDTH = '1.5px';
+  var DRAG_ENTER_BACKGROUND_COLOR = '#d6d6f5';
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   var noticeAdForm = document.querySelector('form.notice__form');
   var addressFiled = noticeAdForm.querySelector('fieldset input#address');
@@ -16,8 +18,16 @@ window.form = (function () {
   var guestCount = noticeAdForm.querySelector('fieldset select#capacity');
   var buttonSubmit = noticeAdForm.querySelector('fieldset button.form__submit');
   var discription = noticeAdForm.querySelector('#description');
+  var avatarPreview = noticeAdForm.querySelector('div.notice__preview img');
+  var avatarChooser = noticeAdForm.querySelector('#avatar');
+  var avatarChooserLabel = noticeAdForm.querySelector('div.notice__photo label.drop-zone');
+  var photoContainer = noticeAdForm.querySelector('.form__photo-container');
+  var photoChooser = noticeAdForm.querySelector('#images');
+  var photoChooserLabel = noticeAdForm.querySelector('div.form__photo-container label.drop-zone');
 
   var callbackSubmitForm;
+
+  var draggedPhoto;
 
   initAddNoticeForm();
 
@@ -26,6 +36,155 @@ window.form = (function () {
   housingType.addEventListener('change', onTypeChange);
   roomsCount.addEventListener('change', onRoomsChange);
   buttonSubmit.addEventListener('click', onSubmitButtonClick);
+
+  avatarChooser.addEventListener('change', onAvatarChooserChanger);
+  avatarChooserLabel.addEventListener('drop', onAvatarChooserLabelDrop);
+  avatarChooserLabel.addEventListener('dragover', onChooserLabelDragOver);
+  avatarChooserLabel.addEventListener('dragenter', onChooserLabelDragEnter);
+  avatarChooserLabel.addEventListener('dragleave', onChooserLabelDragLeave);
+
+  photoChooser.addEventListener('change', onPhotoChooserChanger);
+  photoChooserLabel.addEventListener('drop', onHousingChooserLabelDrop);
+  photoChooserLabel.addEventListener('dragover', onChooserLabelDragOver);
+  photoChooserLabel.addEventListener('dragenter', onChooserLabelDragEnter);
+  photoChooserLabel.addEventListener('dragleave', onChooserLabelDragLeave);
+
+  function onPhotoDrag(evt) {
+
+    if (evt.target.tagName.toLowerCase() === 'img') {
+      draggedPhoto = evt.target;
+      evt.dataTransfer.setData('text/plain', evt.target.alt);
+    }
+  }
+
+  function onPhotoDragOver(evt) {
+    evt.preventDefault();
+    return false;
+  }
+
+  function onPhotoDrop(evt) {
+
+    var target = evt.currentTarget;
+
+    var draggedSibling = draggedPhoto.nextSibling;
+    var targetSibling = target.nextSibling;
+
+    if (targetSibling) {
+      photoContainer.insertBefore(draggedPhoto, targetSibling);
+    } else {
+      photoContainer.appendChild(draggedPhoto);
+    }
+
+    if (draggedSibling) {
+      photoContainer.insertBefore(target, draggedSibling);
+    } else {
+      photoContainer.appendChild(target);
+    }
+  }
+
+  function onPhotoChooserChanger() {
+
+    var photoFiles = photoChooser.files;
+    loadHousingPreview(photoFiles);
+  }
+
+  function onHousingChooserLabelDrop(evt) {
+
+    evt.target.style.backgroundColor = '';
+    evt.preventDefault();
+
+    var photoFiles = evt.dataTransfer.files;
+    loadHousingPreview(photoFiles);
+  }
+
+  function loadHousingPreview(photoFiles) {
+
+    for (var i = 0; i < photoFiles.length; i++) {
+
+      var photoName = photoFiles[i].name.toLowerCase();
+
+      var matches = FILE_TYPES.some(function (it) {
+        return photoName.endsWith(it);
+      });
+
+      if (matches) {
+        createEventLoadForPhoto(photoFiles[i]);
+      }
+    }
+  }
+
+  function createEventLoadForPhoto(photo) {
+
+    var reader = new FileReader();
+
+    var imgDom = document.createElement('IMG');
+    imgDom.width = '44';
+    imgDom.height = '40';
+
+    reader.addEventListener('load', function () {
+      imgDom.src = reader.result;
+      photoContainer.appendChild(imgDom);
+    });
+
+    reader.readAsDataURL(photo);
+
+    imgDom.addEventListener('dragstart', onPhotoDrag);
+    imgDom.addEventListener('dragover', onPhotoDragOver);
+    imgDom.addEventListener('drop', onPhotoDrop);
+  }
+
+  function onAvatarChooserLabelDrop(evt) {
+
+    evt.target.style.backgroundColor = '';
+    evt.preventDefault();
+
+    var avatarFile = evt.dataTransfer.files[0];
+    loadAvatarPreview(avatarFile);
+  }
+
+  function onChooserLabelDragOver(evt) {
+
+    evt.preventDefault();
+    return false;
+  }
+
+  function onChooserLabelDragEnter(evt) {
+
+    evt.target.style.backgroundColor = DRAG_ENTER_BACKGROUND_COLOR;
+    evt.preventDefault();
+  }
+
+  function onChooserLabelDragLeave(evt) {
+
+    evt.target.style.backgroundColor = '';
+    evt.preventDefault();
+  }
+
+  function onAvatarChooserChanger() {
+
+    var avatarFile = avatarChooser.files[0];
+    loadAvatarPreview(avatarFile);
+  }
+
+  function loadAvatarPreview(avatarFile) {
+
+    var avatarName = avatarFile.name.toLowerCase();
+
+    var matches = FILE_TYPES.some(function (it) {
+      return avatarName.endsWith(it);
+    });
+
+    if (matches) {
+
+      var reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        avatarPreview.src = reader.result;
+      });
+
+      reader.readAsDataURL(avatarFile);
+    }
+  }
 
   function onTimeInChange() {
 
@@ -78,6 +237,22 @@ window.form = (function () {
     titleFiled.value = '';
     priceFiled.value = '';
     discription.value = '';
+
+    setAddress(0, 0);
+
+    avatarPreview.src = 'img/avatars/default.png';
+
+    var housingPhotos = photoContainer.querySelectorAll('img');
+
+    for (var i = 0; i < housingPhotos.length; i++) {
+      photoContainer.removeChild(housingPhotos[i]);
+    }
+
+    var features = document.querySelectorAll('fieldset.form__element.features.form__element--wide input');
+
+    for (i = 0; i < features.length; i++) {
+      features[i].checked = false;
+    }
   }
 
   function initAddNoticeForm() {
@@ -86,7 +261,7 @@ window.form = (function () {
 
     addressFiled.readOnly = true;
     addressFiled.required = true;
-    addressFiled.value = '123'; // иначе форма не верна, что-то в ней долждно быть. Хотя сама readonly
+    setAddress(0, 0);
 
     titleFiled.required = true;
     titleFiled.minLength = 30;
@@ -96,6 +271,8 @@ window.form = (function () {
     priceFiled.min = 0;
     priceFiled.max = 1000000;
     priceFiled.placeholder = 1000;
+
+    photoChooser.multiple = true;
   }
 
   function checkFileds() {
@@ -170,6 +347,11 @@ window.form = (function () {
     field.min = price;
   }
 
+  function setAddress(x, y) {
+
+    addressFiled.value = 'x: ' + x + ', y:' + y;
+  }
+
   return {
 
     setNoticeFormDisable: function (able) {
@@ -189,10 +371,7 @@ window.form = (function () {
         fields[i].disabled = able;
       }
     },
-    setAddress: function (x, y) {
-
-      addressFiled.value = 'x: ' + x + ', y:' + y;
-    },
+    setAddress: setAddress,
     setCallbackSubmitFunction: setCallbackSubmitFunction,
     clearForm: clearForm
   };
