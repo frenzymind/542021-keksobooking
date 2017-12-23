@@ -59,8 +59,6 @@ window.map = (function () {
 
   function onMainPinMousedown(evt) {
 
-    var mainPin = getClosestPin(evt.target);
-
     var mapOffsetX = document.querySelector('.map').offsetLeft;
 
     function onMouseMove(moveEvt) {
@@ -114,7 +112,7 @@ window.map = (function () {
 
       var closerElement = getClosestPin(evt.target);
 
-      if (!isItPin(closerElement)) {
+      if (closerElement === null) {
         return;
       }
 
@@ -122,18 +120,9 @@ window.map = (function () {
     }
   }
 
-  function isItPin(domElement) {
-
-    if (domElement === null || domElement.classList.contains(PIN_MAIN_CLASS) === true) { // если это не пин или это главный пин, то не реагируем
-      return false;
-    }
-
-    return true;
-  }
-
   function getClosestPin(domElement) {
 
-    var closerElement = domElement.closest('button.map__pin.map__pin--main') || domElement.closest('button.map__pin');
+    var closerElement =  domElement.closest('button.map__pin:not(.map__pin--main)');
 
     return closerElement;
   }
@@ -142,7 +131,7 @@ window.map = (function () {
 
     var closerElement = getClosestPin(evt.target);
 
-    if (!isItPin(closerElement)) {
+    if (closerElement === null) {
       return;
     }
 
