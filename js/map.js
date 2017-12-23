@@ -26,7 +26,8 @@ window.map = (function () {
     mainMap.classList.remove('map--faded');
     document.addEventListener('click', onMapPinClick);
     document.addEventListener('keydown', onPinKeyDown);
-    document.addEventListener('mousedown', onMainPinMousedown);
+
+    mapMainPin.addEventListener('mousedown', onMainPinMousedown);
 
     window.form.setCallbackSubmitFunction(formSubmitPressed);
   }
@@ -59,10 +60,6 @@ window.map = (function () {
   function onMainPinMousedown(evt) {
 
     var mainPin = getClosestPin(evt.target);
-
-    if (!isItMainPin(mainPin)) {
-      return;
-    }
 
     var mapOffsetX = document.querySelector('.map').offsetLeft;
 
@@ -128,15 +125,6 @@ window.map = (function () {
   function isItPin(domElement) {
 
     if (domElement === null || domElement.classList.contains(PIN_MAIN_CLASS) === true) { // если это не пин или это главный пин, то не реагируем
-      return false;
-    }
-
-    return true;
-  }
-
-  function isItMainPin(domElement) {
-
-    if (domElement === null || domElement.classList.contains(PIN_MAIN_CLASS) === false) {
       return false;
     }
 
