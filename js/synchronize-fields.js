@@ -4,7 +4,7 @@ window.synchronizeFields = (function () {
 
   return {
 
-    synchronizeFields: function (field1, field2, values1, values2, callbackFunc) {
+    syncTwoFields: function (field1, field2, values1, values2, callbackFunc) {
 
       var index = values1.indexOf(field1.value);
 
