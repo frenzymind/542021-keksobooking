@@ -40,12 +40,12 @@ window.filter = (function () {
   var featuresElevator = 0;
   var featuresConditioner = 0;
 
-  var WifiName = 'wifi';
-  var DishwasherName = 'dishwasher';
-  var ParkingName = 'parking';
-  var WasherName = 'washer';
-  var ElevatorName = 'elevator';
-  var ConditionerName = 'conditioner';
+  var wifiName = 'wifi';
+  var dishwasherName = 'dishwasher';
+  var parkingName = 'parking';
+  var washerName = 'washer';
+  var elevatorName = 'elevator';
+  var conditionerName = 'conditioner';
 
   var fullFilterWeight = 0;
 
@@ -74,12 +74,12 @@ window.filter = (function () {
 
   function getFeaturesWeight(ad) {
 
-    return getFeatusWeightIfExist(ad, WifiName, featuresWifi) +
-           getFeatusWeightIfExist(ad, DishwasherName, featuresDishWasher) +
-           getFeatusWeightIfExist(ad, ParkingName, featuresParking) +
-           getFeatusWeightIfExist(ad, WasherName, featuresWasher) +
-           getFeatusWeightIfExist(ad, ElevatorName, featuresElevator) +
-           getFeatusWeightIfExist(ad, ConditionerName, featuresConditioner);
+    return getFeatusWeightIfExist(ad, wifiName, featuresWifi) +
+           getFeatusWeightIfExist(ad, dishwasherName, featuresDishWasher) +
+           getFeatusWeightIfExist(ad, parkingName, featuresParking) +
+           getFeatusWeightIfExist(ad, washerName, featuresWasher) +
+           getFeatusWeightIfExist(ad, elevatorName, featuresElevator) +
+           getFeatusWeightIfExist(ad, conditionerName, featuresConditioner);
   }
 
   function getFeatusWeightIfExist(ad, name, weight) {

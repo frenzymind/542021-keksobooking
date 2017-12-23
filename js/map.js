@@ -145,9 +145,9 @@ window.map = (function () {
 
   function getClosestPin(domElement) {
 
-    var closest = domElement.closest('button.map__pin.map__pin--main') || domElement.closest('button.map__pin');
+    var closerElement = domElement.closest('button.map__pin.map__pin--main') || domElement.closest('button.map__pin');
 
-    return closest;
+    return closerElement;
   }
 
   function onMapPinClick(evt) {
