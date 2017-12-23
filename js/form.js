@@ -160,7 +160,7 @@ window.form = (function () {
     evt.preventDefault();
   }
 
-  function onAvatarChooserChanger() {
+  function onAvatarChooserChanger(evt) {
 
     var avatarFile = avatarChooser.files[0];
     loadAvatarPreview(avatarFile);

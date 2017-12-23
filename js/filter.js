@@ -93,11 +93,7 @@ window.filter = (function () {
 
     var featureIndex = ad.offer.features.indexOf(name);
 
-    if (featureIndex === -1) {
-      return 0;
-    }
-
-    return weight;
+    return (featureIndex === -1) ? 0 : weight;
   }
 
   function getWeight(filterElement) {
@@ -148,12 +144,12 @@ window.filter = (function () {
       fullFilterWeight += GUEST_COUNT_WEIGHT;
     }
 
-    fullFilterWeight += featuresWifi
-                + featuresDishWasher
-                + featuresParking
-                + featuresWasher
-                + featuresElevator
-                +featuresConditioner;
+    fullFilterWeight += featuresWifi +
+                        featuresDishWasher +
+                        featuresParking +
+                        featuresWasher +
+                        featuresElevator +
+                        featuresConditioner;
   }
 
   return {
