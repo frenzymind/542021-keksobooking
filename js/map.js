@@ -15,6 +15,7 @@ window.map = (function () {
   var mapPins;
   var mapMainPin;
   var ads;
+  var originalAds;
   var popupCloseButton;
   var filterContainer;
 
@@ -32,7 +33,7 @@ window.map = (function () {
 
   function onFilterFormChange(evt) {
 
-    ads = window.filter.getFiltredArray(ads, evt.target);
+    ads = window.filter.getFiltredArray(originalAds, evt.target);
 
     debounceFilterChange(showPins);
   }
@@ -230,6 +231,7 @@ window.map = (function () {
     clearError();
 
     ads = pins;
+    originalAds = ads.slice();
 
     showPins();
   }

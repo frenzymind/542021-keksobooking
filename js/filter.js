@@ -14,6 +14,12 @@ window.filter = (function () {
   var FEATURES_ELEVATOR_ID = 'filter-elevator';
   var FEATURES_CONDITIONER_ID = 'filter-conditioner';
 
+  var HOUSING_TYPE_WEIGHT = 10;
+  var HOUSING_PRICE_WEIGHT = 9;
+  var ROOM_COUNT_WEIGHT = 8;
+  var GUEST_COUNT_WEIGHT = 7;
+  var FEATURE_WEIGHT = 1;
+
   var NO_FILTER_VALUE = 'any';
 
   var MIDDLE_MIN_PRICE = 10000;
@@ -41,27 +47,29 @@ window.filter = (function () {
   var ElevatorName = 'elevator';
   var ConditionerName = 'conditioner';
 
+  var fullFilterWeight = 0;
+
   function getHouseTypeWeight(ad) {
-    return ad.offer.type === houseTypeValue ? 10 : 0;
+    return ad.offer.type === houseTypeValue ? HOUSING_TYPE_WEIGHT : 0;
   }
 
   function getHousePriceWeight(ad) {
 
     switch (housePriceValue) {
 
-      case 'middle': return (ad.offer.price >= MIDDLE_MIN_PRICE && ad.offer.price <= MIDDLE_MAX_PRICE) ? 9 : 0;
-      case 'low': return ad.offer.price <= LOW_PRICE ? 9 : 0;
-      case 'high': return ad.offer.price >= HIGH_PRICE ? 9 : 0;
+      case 'middle': return (ad.offer.price >= MIDDLE_MIN_PRICE && ad.offer.price <= MIDDLE_MAX_PRICE) ? HOUSING_PRICE_WEIGHT : 0;
+      case 'low': return ad.offer.price <= LOW_PRICE ? HOUSING_PRICE_WEIGHT : 0;
+      case 'high': return ad.offer.price >= HIGH_PRICE ? HOUSING_PRICE_WEIGHT : 0;
       default: return 0;
     }
   }
 
   function getRoomCountWeight(ad) {
-    return ad.offer.rooms === +houseRoomValue ? 8 : 0;
+    return ad.offer.rooms === +houseRoomValue ? ROOM_COUNT_WEIGHT : 0;
   }
 
   function getGuestCountWeight(ad) {
-    return ad.offer.guests === +houseGuestValue ? 7 : 0;
+    return ad.offer.guests === +houseGuestValue ? GUEST_COUNT_WEIGHT : 0;
   }
 
   function getFeaturesWeight(ad) {
@@ -85,28 +93,60 @@ window.filter = (function () {
     return weight;
   }
 
-  function getWeight(left, right) {
+  function getWeight(filterElement) {
 
-    var theRightWeight = 0;
-    var theLeftWeight = 0;
+    var theWeight = 0;
 
-    theLeftWeight += getHouseTypeWeight(left);
-    theRightWeight += getHouseTypeWeight(right);
+    theWeight += getHouseTypeWeight(filterElement);
 
-    theLeftWeight += getHousePriceWeight(left);
-    theRightWeight += getHousePriceWeight(right);
+    theWeight += getHousePriceWeight(filterElement);
 
-    theLeftWeight += getRoomCountWeight(left);
-    theRightWeight += getRoomCountWeight(right);
+    theWeight += getRoomCountWeight(filterElement);
 
-    theLeftWeight += getGuestCountWeight(left);
-    theRightWeight += getGuestCountWeight(right);
+    theWeight += getGuestCountWeight(filterElement);
 
-    theLeftWeight += getFeaturesWeight(left);
-    theRightWeight += getFeaturesWeight(right);
+    theWeight += getFeaturesWeight(filterElement);
 
-    return theRightWeight - theLeftWeight;
+    return theWeight;
+  }
 
+  function compareWeight(filterElement) {
+
+    var elementWeight = getWeight(filterElement);
+
+    if (elementWeight === fullFilterWeight) {
+      return true;
+    }
+
+    return false;
+  }
+
+  function updateFullFilterWeight() {
+
+    fullFilterWeight = 0;
+
+    if (houseTypeValue !== NO_FILTER_VALUE) {
+      fullFilterWeight += HOUSING_TYPE_WEIGHT;
+    }
+
+    if (housePriceValue !== NO_FILTER_VALUE) {
+      fullFilterWeight += HOUSING_PRICE_WEIGHT;
+    }
+
+    if (houseRoomValue !== NO_FILTER_VALUE) {
+      fullFilterWeight += ROOM_COUNT_WEIGHT;
+    }
+
+    if (houseGuestValue !== NO_FILTER_VALUE) {
+      fullFilterWeight += GUEST_COUNT_WEIGHT;
+    }
+
+    fullFilterWeight += featuresWifi
+                + featuresDishWasher
+                + featuresParking
+                + featuresWasher
+                + featuresElevator
+                +featuresConditioner;
   }
 
   return {
@@ -157,7 +197,9 @@ window.filter = (function () {
 
       }
 
-      var sortedArray = array.slice().sort(getWeight);
+      updateFullFilterWeight();
+
+      var sortedArray = array.filter(compareWeight);
 
       return sortedArray;
 
