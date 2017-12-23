@@ -2,20 +2,19 @@
 
 window.pin = (function () {
 
+  var MAP_PIN_X_CORRECTION = -20;
+  var MAP_PIN_Y_CORRECTION = -22;
+
   var activePin = false;
 
   function scaleX(x) {
 
-    var mapPinXCorrection = -20;
-
-    return x + mapPinXCorrection;
+    return x + MAP_PIN_X_CORRECTION;
   }
 
   function scaleY(y) {
 
-    var mapPinYCorrection = -22;
-
-    return y + mapPinYCorrection;
+    return y + MAP_PIN_Y_CORRECTION;
   }
 
   function createDomPinElement(ad, index) {
