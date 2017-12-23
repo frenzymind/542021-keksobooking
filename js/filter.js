@@ -57,10 +57,17 @@ window.filter = (function () {
 
     switch (housePriceValue) {
 
-      case 'middle': return (ad.offer.price >= MIDDLE_MIN_PRICE && ad.offer.price <= MIDDLE_MAX_PRICE) ? HOUSING_PRICE_WEIGHT : 0;
-      case 'low': return ad.offer.price <= LOW_PRICE ? HOUSING_PRICE_WEIGHT : 0;
-      case 'high': return ad.offer.price >= HIGH_PRICE ? HOUSING_PRICE_WEIGHT : 0;
-      default: return 0;
+      case 'middle':
+        return (ad.offer.price >= MIDDLE_MIN_PRICE && ad.offer.price <= MIDDLE_MAX_PRICE) ? HOUSING_PRICE_WEIGHT : 0;
+
+      case 'low':
+        return ad.offer.price <= LOW_PRICE ? HOUSING_PRICE_WEIGHT : 0;
+
+      case 'high':
+        return ad.offer.price >= HIGH_PRICE ? HOUSING_PRICE_WEIGHT : 0;
+
+      default:
+        return 0;
     }
   }
 
