@@ -49,6 +49,14 @@ window.form = (function () {
   photoChooserLabel.addEventListener('dragenter', onChooserLabelDragEnter);
   photoChooserLabel.addEventListener('dragleave', onChooserLabelDragLeave);
 
+  function onImagesDrop(evt, callback) {
+
+      evt.target.style.backgroundColor = '';
+      evt.preventDefault();
+      var eventFiles = evt.dataTransfer.files;
+      callback(eventFiles)
+  }
+
   function onPhotoDrag(evt) {
 
     if (evt.target.tagName.toLowerCase() === 'img') {
@@ -90,11 +98,9 @@ window.form = (function () {
 
   function onHousingChooserLabelDrop(evt) {
 
-    evt.target.style.backgroundColor = '';
-    evt.preventDefault();
-
-    var photoFiles = evt.dataTransfer.files;
-    loadHousingPreview(photoFiles);
+    onImagesDrop(evt, function(files) {
+      loadHousingPreview(files);
+    });
   }
 
   function loadHousingPreview(photoFiles) {
@@ -136,11 +142,9 @@ window.form = (function () {
 
   function onAvatarChooserLabelDrop(evt) {
 
-    evt.target.style.backgroundColor = '';
-    evt.preventDefault();
-
-    var avatarFile = evt.dataTransfer.files[0];
-    loadAvatarPreview(avatarFile);
+    onImagesDrop(evt, function(files) {
+      loadAvatarPreview(files[0]);
+    });
   }
 
   function onChooserLabelDragOver(evt) {
