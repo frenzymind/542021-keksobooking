@@ -313,7 +313,10 @@ window.form = (function () {
 
       var optionValue = parseInt(option.value, 10);
 
-      if (guestValue === 0 && optionValue === 0 || optionValue !== 0 && optionValue <= guestValue) {
+      var isEmptyCapacity = guestValue === 0 && optionValue === 0;
+      var isValidCapacity = optionValue !== 0 && optionValue <= guestValue;
+
+      if (isEmptyCapacity || isValidCapacity) {
         option.classList.remove('hidden');
       } else {
         option.classList.add('hidden');
