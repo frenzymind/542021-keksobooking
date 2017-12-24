@@ -116,11 +116,7 @@ window.filter = (function () {
 
     var elementWeight = getWeight(filterElement);
 
-    if (elementWeight === fullFilterWeight) {
-      return true;
-    }
-
-    return false;
+    return elementWeight === fullFilterWeight;
   }
 
   function updateFullFilterWeight() {

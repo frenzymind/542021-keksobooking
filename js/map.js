@@ -51,8 +51,8 @@ window.map = (function () {
 
     var pins = mapPins.querySelectorAll('button.map__pin:not(.map__pin--main)');
 
-    pins.forEach(function (it) {
-      mapPins.removeChild(it);
+    pins.forEach(function (pin) {
+      mapPins.removeChild(pin);
     });
   }
 

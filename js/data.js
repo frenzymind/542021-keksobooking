@@ -79,12 +79,12 @@ window.data = (function () {
 
     var articleDomFeatures = article.querySelector('ul');
 
-    OFFER_FEATURES.forEach(function (it) {
+    OFFER_FEATURES.forEach(function (feature) {
 
-      var featureIndex = ad.offer.features.indexOf(it);
+      var featureIndex = ad.offer.features.indexOf(feature);
 
       if (featureIndex === -1) {
-        deleteFeature(articleDomFeatures, it);
+        deleteFeature(articleDomFeatures, feature);
       }
     });
 

@@ -107,15 +107,15 @@ window.form = (function () {
 
     var arrayPhotos = Array.from(photoFiles);
 
-    arrayPhotos.forEach(function (it) {
-      var photoName = it.name.toLowerCase();
+    arrayPhotos.forEach(function (photo) {
+      var photoName = photo.name.toLowerCase();
 
-      var matches = FILE_TYPES.some(function (iter) {
-        return photoName.endsWith(iter);
+      var matches = FILE_TYPES.some(function (type) {
+        return photoName.endsWith(type);
       });
 
       if (matches) {
-        createEventLoadForPhoto(it);
+        createEventLoadForPhoto(photo);
       }
     });
   }
@@ -249,14 +249,14 @@ window.form = (function () {
 
     var housingPhotos = photoContainer.querySelectorAll('img');
 
-    housingPhotos.forEach(function (it) {
-      photoContainer.removeChild(it);
+    housingPhotos.forEach(function (photo) {
+      photoContainer.removeChild(photo);
     });
 
     var features = document.querySelectorAll('fieldset.form__element.features.form__element--wide input');
 
-    features.forEach(function (it) {
-      it.checked = false;
+    features.forEach(function (featureCheckbox) {
+      featureCheckbox.checked = false;
     });
 
   }
@@ -286,10 +286,10 @@ window.form = (function () {
     var hasError = false;
     var requiredFields = noticeAdForm.querySelectorAll('input[required]');
 
-    requiredFields.forEach(function (it) {
+    requiredFields.forEach(function (field) {
 
-      var isValid = it.checkValidity();
-      setFieldValid(it, isValid);
+      var isValid = field.checkValidity();
+      setFieldValid(field, isValid);
 
       if (!isValid) {
         hasError = true;
@@ -305,51 +305,23 @@ window.form = (function () {
     filed.style.borderWidth = valid ? '' : BORDER_ERROR_WIDTH;
   }
 
-  function setGuestCountByValue(filed, value) {
+  function setGuestCountByValue(guestSelect, guestValue) {
 
-    var foundSomething = false;
-    var zeroElement;
+    guestValue = parseInt(guestValue, 10);
 
-    value = parseInt(value, 10);
+    Array.from(guestSelect.options).forEach(function (option) {
 
-    var childrens = Array.from(filed.children);
+      var optionValue = parseInt(option.value, 10);
 
-    childrens.some(function (it) {
-
-      var selectValue = parseInt(it.value, 10);
-
-      if (selectValue === 0) {
-        zeroElement = it;
-        zeroElement.classList.add('hidden');
-        return true;
+      if (guestValue === 0 && optionValue === 0 || optionValue !== 0 && optionValue <= guestValue) {
+        option.classList.remove('hidden');
+      } else {
+        option.classList.add('hidden');
       }
-
-      return false;
     });
 
-    childrens.forEach(function (it) {
+    guestSelect.selectedIndex = guestSelect.querySelector('option:not(.hidden)').index; // первый не скрытый элемент из списка
 
-      var selectValue = parseInt(it.value, 10);
-
-      if (selectValue !== 0) {
-
-        if (value >= selectValue && value !== 100) {
-
-          it.classList.remove('hidden');
-          foundSomething = true;
-
-        } else {
-          it.classList.add('hidden');
-        }
-      }
-
-    });
-
-    if (foundSomething === false) {
-      zeroElement.classList.remove('hidden');
-    }
-
-    filed.selectedIndex = filed.querySelector('option:not(.hidden)').index; // первый не скрытый элемент из списка
   }
 
   function syncTimeInOut(timeField, value) {
