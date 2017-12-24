@@ -99,20 +99,20 @@ window.form = (function () {
 
   function loadHousingPreview(photoFiles) {
 
-    for (var i = 0; i < photoFiles.length; i++) {
+    var arrayPhotos = Array.from(photoFiles);
 
-        var photoName = photoFiles[i].name.toLowerCase();
+    arrayPhotos.forEach(function (it) {
+      var photoName = it.name.toLowerCase();
 
-        var matches = FILE_TYPES.some(function (it) {
-          return photoName.endsWith(it);
-        });
+      var matches = FILE_TYPES.some(function (it) {
+        return photoName.endsWith(it);
+      });
 
-        if (matches) {
-          createEventLoadForPhoto(photoFiles[i]);
-        }
-    }
+      if (matches) {
+        createEventLoadForPhoto(it);
+      }
+    });
   }
-
 
   function createEventLoadForPhoto(photo) {
 
@@ -308,27 +308,38 @@ window.form = (function () {
 
     value = parseInt(value, 10);
 
-    for (var i = 0; i < filed.children.length; i++) {
+    var childrens = Array.from(filed.children);
 
-      var selectValue = parseInt(filed.children[i].value, 10);
-      var selectElement = filed.children[i];
+    childrens.some(function(it) {
+
+      var selectValue = parseInt(it.value, 10);
 
       if (selectValue === 0) {
-        zeroElement = selectElement;
+        zeroElement = it;
         zeroElement.classList.add('hidden');
-        continue;
+        return true;
       }
 
-      if (value >= selectValue && value !== 100) {
+      return false;
+    });
 
-        selectElement.classList.remove('hidden');
-        foundSomething = true;
+    childrens.forEach(function (it) {
 
-      } else {
+      var selectValue = parseInt(it.value, 10);
 
-        selectElement.classList.add('hidden');
+      if (selectValue !== 0) {
+
+        if (value >= selectValue && value !== 100) {
+
+          it.classList.remove('hidden');
+          foundSomething = true;
+
+        } else {
+          it.classList.add('hidden');
+        }
       }
-    }
+
+    });
 
     if (foundSomething === false) {
       zeroElement.classList.remove('hidden');

@@ -43,9 +43,7 @@ window.pin = (function () {
       var count = ads.length > pinCount ? pinCount : ads.length;
       var fragment = document.createDocumentFragment();
 
-      ads.filter(function (it, index) {
-        return index < count ? true : false;
-      }).forEach(function (it, index) {
+      ads.slice(0, count).forEach(function (it, index) {
         fragment.appendChild(createDomPinElement(it, index));
       });
 
