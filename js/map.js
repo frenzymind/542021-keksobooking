@@ -4,7 +4,6 @@ window.map = (function () {
 
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
-  var PIN_MAIN_CLASS = 'map__pin--main';
   var PIN_MAIN_TOP_BORDER = 100;
   var PIN_MAIN_BOT_BORDER = 500;
   var ERROR_CLASS = 'error';
@@ -57,7 +56,7 @@ window.map = (function () {
     });
   }
 
-  function onMainPinMousedown(evt) {
+  function onMainPinMousedown() {
 
     var mapOffsetX = document.querySelector('.map').offsetLeft;
 
@@ -122,7 +121,7 @@ window.map = (function () {
 
   function getClosestPin(domElement) {
 
-    var closerElement =  domElement.closest('button.map__pin:not(.map__pin--main)');
+    var closerElement = domElement.closest('button.map__pin:not(.map__pin--main)');
 
     return closerElement;
   }

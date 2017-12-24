@@ -18,7 +18,6 @@ window.filter = (function () {
   var HOUSING_PRICE_WEIGHT = 9;
   var ROOM_COUNT_WEIGHT = 8;
   var GUEST_COUNT_WEIGHT = 7;
-  var FEATURE_WEIGHT = 1;
 
   var NO_FILTER_VALUE = 'any';
 

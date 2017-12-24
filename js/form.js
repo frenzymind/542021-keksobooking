@@ -51,10 +51,10 @@ window.form = (function () {
 
   function onImagesDrop(evt, callback) {
 
-      evt.target.style.backgroundColor = '';
-      evt.preventDefault();
-      var eventFiles = evt.dataTransfer.files;
-      callback(eventFiles)
+    evt.target.style.backgroundColor = '';
+    evt.preventDefault();
+    var eventFiles = evt.dataTransfer.files;
+    callback(eventFiles);
   }
 
   function onPhotoDrag(evt) {
@@ -98,7 +98,7 @@ window.form = (function () {
 
   function onHousingChooserLabelDrop(evt) {
 
-    onImagesDrop(evt, function(files) {
+    onImagesDrop(evt, function (files) {
       loadHousingPreview(files);
     });
   }
@@ -110,8 +110,8 @@ window.form = (function () {
     arrayPhotos.forEach(function (it) {
       var photoName = it.name.toLowerCase();
 
-      var matches = FILE_TYPES.some(function (it) {
-        return photoName.endsWith(it);
+      var matches = FILE_TYPES.some(function (iter) {
+        return photoName.endsWith(iter);
       });
 
       if (matches) {
@@ -142,7 +142,7 @@ window.form = (function () {
 
   function onAvatarChooserLabelDrop(evt) {
 
-    onImagesDrop(evt, function(files) {
+    onImagesDrop(evt, function (files) {
       loadAvatarPreview(files[0]);
     });
   }
@@ -165,7 +165,7 @@ window.form = (function () {
     evt.preventDefault();
   }
 
-  function onAvatarChooserChanger(evt) {
+  function onAvatarChooserChanger() {
 
     var avatarFile = avatarChooser.files[0];
     loadAvatarPreview(avatarFile);
@@ -314,7 +314,7 @@ window.form = (function () {
 
     var childrens = Array.from(filed.children);
 
-    childrens.some(function(it) {
+    childrens.some(function (it) {
 
       var selectValue = parseInt(it.value, 10);
 
