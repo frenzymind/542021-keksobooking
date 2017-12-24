@@ -101,17 +101,18 @@ window.form = (function () {
 
     for (var i = 0; i < photoFiles.length; i++) {
 
-      var photoName = photoFiles[i].name.toLowerCase();
+        var photoName = photoFiles[i].name.toLowerCase();
 
-      var matches = FILE_TYPES.some(function (it) {
-        return photoName.endsWith(it);
-      });
+        var matches = FILE_TYPES.some(function (it) {
+          return photoName.endsWith(it);
+        });
 
-      if (matches) {
-        createEventLoadForPhoto(photoFiles[i]);
-      }
+        if (matches) {
+          createEventLoadForPhoto(photoFiles[i]);
+        }
     }
   }
+
 
   function createEventLoadForPhoto(photo) {
 
@@ -244,15 +245,16 @@ window.form = (function () {
 
     var housingPhotos = photoContainer.querySelectorAll('img');
 
-    for (var i = 0; i < housingPhotos.length; i++) {
-      photoContainer.removeChild(housingPhotos[i]);
-    }
+    housingPhotos.forEach(function (currentValue) {
+      photoContainer.removeChild(currentValue);
+    });
 
     var features = document.querySelectorAll('fieldset.form__element.features.form__element--wide input');
 
-    for (i = 0; i < features.length; i++) {
-      features[i].checked = false;
-    }
+    features.forEach(function (currentValue) {
+      currentValue.checked = false;
+    });
+
   }
 
   function initAddNoticeForm() {
@@ -280,17 +282,15 @@ window.form = (function () {
     var hasError = false;
     var requiredFields = noticeAdForm.querySelectorAll('input[required]');
 
-    for (var i = 0; i < requiredFields.length; i++) {
+    requiredFields.forEach(function (currentValue) {
 
-      var selectElement = requiredFields[i];
-
-      var isValid = selectElement.checkValidity();
-      setFieldValid(selectElement, isValid);
+      var isValid = currentValue.checkValidity();
+      setFieldValid(currentValue, isValid);
 
       if (!isValid) {
         hasError = true;
       }
-    }
+    });
 
     return hasError;
   }
@@ -366,10 +366,9 @@ window.form = (function () {
 
       var fields = noticeAdForm.querySelectorAll('fieldset');
 
-      for (var i = 0; i < fields.length; i++) {
-
-        fields[i].disabled = able;
-      }
+      fields.forEach(function (currentValue) {
+        currentValue.disabled = able;
+      });
     },
     setAddress: setAddress,
     setCallbackSubmitFunction: setCallbackSubmitFunction,

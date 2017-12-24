@@ -79,14 +79,14 @@ window.data = (function () {
 
     var articleDomFeatures = article.querySelector('ul');
 
-    for (var i = 0; i < OFFER_FEATURES.length; i++) {
+    OFFER_FEATURES.forEach(function (currentValue) {
 
-      var featureIndex = ad.offer.features.indexOf(OFFER_FEATURES[i]);
+      var featureIndex = ad.offer.features.indexOf(currentValue);
 
       if (featureIndex === -1) {
-        deleteFeature(articleDomFeatures, OFFER_FEATURES[i]);
+        deleteFeature(articleDomFeatures, currentValue);
       }
-    }
+    });
 
     article.querySelector('p:nth-of-type(5)').textContent = ad.offer.description;
     article.querySelector('ul.popup__pictures li img').attributes.src.value = ad.author.avatar;

@@ -52,9 +52,9 @@ window.map = (function () {
 
     var pins = mapPins.querySelectorAll('button.map__pin:not(.map__pin--main)');
 
-    for (var i = 0; i < pins.length; i++) {
-      mapPins.removeChild(pins[i]);
-    }
+    pins.forEach(function (currentValue) {
+      mapPins.removeChild(currentValue);
+    });
   }
 
   function onMainPinMousedown(evt) {
