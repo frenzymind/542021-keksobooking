@@ -249,14 +249,14 @@ window.form = (function () {
 
     var housingPhotos = photoContainer.querySelectorAll('img');
 
-    housingPhotos.forEach(function (currentValue) {
-      photoContainer.removeChild(currentValue);
+    housingPhotos.forEach(function (it) {
+      photoContainer.removeChild(it);
     });
 
     var features = document.querySelectorAll('fieldset.form__element.features.form__element--wide input');
 
-    features.forEach(function (currentValue) {
-      currentValue.checked = false;
+    features.forEach(function (it) {
+      it.checked = false;
     });
 
   }
@@ -286,10 +286,10 @@ window.form = (function () {
     var hasError = false;
     var requiredFields = noticeAdForm.querySelectorAll('input[required]');
 
-    requiredFields.forEach(function (currentValue) {
+    requiredFields.forEach(function (it) {
 
-      var isValid = currentValue.checkValidity();
-      setFieldValid(currentValue, isValid);
+      var isValid = it.checkValidity();
+      setFieldValid(it, isValid);
 
       if (!isValid) {
         hasError = true;
@@ -381,8 +381,8 @@ window.form = (function () {
 
       var fields = noticeAdForm.querySelectorAll('fieldset');
 
-      fields.forEach(function (currentValue) {
-        currentValue.disabled = able;
+      fields.forEach(function (it) {
+        it.disabled = able;
       });
     },
     setAddress: setAddress,
